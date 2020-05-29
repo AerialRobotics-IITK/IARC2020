@@ -4,3 +4,6 @@
 [submodule "iarc_detection_modules"]
 	path = iarc_detection_modules
 	url = git@github.com:AerialRobotics-IITK/iarc_detection_modules
+[submodule "iarc_avoidance"]
+	path = iarc_avoidance
+	url = git@github.com:AerialRobotics-IITK/iarc_avoidance

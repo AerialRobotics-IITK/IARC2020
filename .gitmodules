@@ -1,0 +1,6 @@
+[submodule "iarc_simulation_tools"]
+	path = iarc_simulation_tools
+	url = git@github.com:AerialRobotics-IITK/iarc_simulation_tools
+[submodule "iarc_detection_modules"]
+	path = iarc_detection_modules
+	url = git@github.com:AerialRobotics-IITK/iarc_detection_modules

@@ -7,3 +7,6 @@
 [submodule "iarc_avoidance"]
 	path = iarc_avoidance
 	url = git@github.com:AerialRobotics-IITK/iarc_avoidance
+[submodule "iarc_trajectory_estimation"]
+	path = iarc_trajectory_estimation
+	url = git@github.com:AerialRobotics-IITK/iarc_trajectory_estimation

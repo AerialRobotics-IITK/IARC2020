@@ -1,5 +1,5 @@
 <package>
-  <name>iarc_detection_modules</name>
+  <name>iarc_mission_nine</name>
   <version>1.0.0</version>
   <description>Detection Modules for IARC Mission 9</description>
   <maintainer email="aerialroboticsiitk@gmail.com">Aerial Robotics IITK</maintainer>
@@ -11,6 +11,8 @@
   <!-- Add packages as run dependencies below -->
   <run_depend>iarc_simulation_tools</run_depend>
   <run_depend>iarc_detection_modules</run_depend>
+  <run_depend>iarc_avoidance</run_depend>
+  <run_depend>iarc_trajectory_estimation</run_depend>
 
   <export>
     <metapackage/>

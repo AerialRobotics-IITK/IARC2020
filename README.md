@@ -37,6 +37,12 @@ wstool merge IARC2020/dependencies.rosinstall
 wstool update
 ```
 
+Other dependencies:
+
+```bash
+sudo apt-get install liblapacke-dev
+```
+
 Build the metapackage using:
 
 ```bash

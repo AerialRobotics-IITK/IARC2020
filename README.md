@@ -40,7 +40,7 @@ wstool update
 Other dependencies:
 
 ```bash
-sudo apt-get install liblapacke-dev
+sudo apt-get install liblapacke-dev libgoogle-glog-dev
 ```
 
 Build the metapackage using:

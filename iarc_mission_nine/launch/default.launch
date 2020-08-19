@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="mav_name" default="firefly"/>
+    <arg name="is_agent" default="false"/>
+    <arg name="world_name" default="default"/>
+
+    <include file="$(find iarc_simulation_tools)/launch/default.launch">
+        <arg name="mav_name" value="$(arg mav_name)"/>
+        <arg name="world_name" default="$(arg world_name)"/>
+    </include>
+
+    <group ns="$(arg mav_name)">
+        <group if="$(arg is_agent)">
+            <node pkg="iarc_mission_nine" type="agent_state_machine_node" name="agent_state_machine" output="screen">
+                <rosparam file="$(find iarc_mission_nine)/cfg/params.yaml" command="load"/>
+                <remap from="odometry" to="ground_truth/odometry"/>
+            </node>
+        </group>
+        <group unless="$(arg is_agent)">
+            <node pkg="iarc_mission_nine" type="carrier_state_machine_node" name="carrier_state_machine" output="screen">
+                <rosparam file="$(find iarc_mission_nine)/cfg/params.yaml" command="load"/>
+                <remap from="odometry" to="ground_truth/odometry"/>
+            </node>
+        </group>
+    </group>
+</launch>

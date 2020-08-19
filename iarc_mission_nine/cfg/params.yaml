@@ -1,0 +1,6 @@
+poll_rate: 10       # Rate for all loops, in Hz
+verbose:            # Verbosity flags for terminal output
+  state: true       # If true, state entry and exit messages are published
+  transition: true  # If true, transition functions publish info messages
+hover_height: 5.0   # Default hovering height, in *metres*
+land_height: 2.0    # Height at which the quad lands, in *metres*

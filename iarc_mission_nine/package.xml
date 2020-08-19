@@ -1,20 +1,29 @@
-<package>
-  <name>iarc_mission_nine</name>
-  <version>1.0.0</version>
-  <description>Detection Modules for IARC Mission 9</description>
-  <maintainer email="aerialroboticsiitk@gmail.com">Aerial Robotics IITK</maintainer>
+<?xml version="1.0"?>
+<package format="2">
+    <name>iarc_mission_nine</name>
+    <version>0.0.0</version>
+    <description>The iarc_mission_nine package</description>
 
-  <license>TODO</license>
+    <maintainer email="ashwins@iitk.ac.in">Ashwin Shenai</maintainer>
 
-  <buildtool_depend>catkin</buildtool_depend>
+    <license>TODO</license>
 
-  <!-- Add packages as run dependencies below -->
-  <run_depend>iarc_simulation_tools</run_depend>
-  <run_depend>iarc_detection_modules</run_depend>
-  <run_depend>iarc_avoidance</run_depend>
-  <run_depend>iarc_trajectory_estimation</run_depend>
+    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin_simple</buildtool_depend>
 
-  <export>
-    <metapackage/>
-  </export>
+    <build_depend>roscpp</build_depend>
+    <depend>nav_msgs</depend>
+    <depend>geometry_msgs</depend>
+
+    <depend>iarc_simulation_tools</depend>
+
+    <depend>dubins_trajectory_generator</depend>
+    <depend>mast_finder</depend>
+
+    <depend>plate_detector</depend>
+    <depend>led_detector</depend>
+    <depend>feature_detection</depend>
+    <depend>pose_estimator</depend>
+    <depend>detector_msgs</depend>
+
 </package>

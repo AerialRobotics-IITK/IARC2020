@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="agent_name" default="iris"/>
+    <arg name="agent_type" default="iris"/>
+
+    <group ns="$(arg agent_name)">
+        <node pkg="iarc_mission_nine" type="agent_state_machine_node" name="agent_state_machine" output="screen">
+            <rosparam file="$(find iarc_mission_nine)/cfg/params.yaml" command="load"/>
+            <remap from="odometry" to="ground_truth/odometry"/>
+        </node>
+    </group>
+</launch>

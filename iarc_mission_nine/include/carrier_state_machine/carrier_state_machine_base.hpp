@@ -1,7 +1,12 @@
 #pragma once
 
 #include <geometry_msgs/PoseStamped.h>
+#include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/SetMode.h>
+#include <mavros_msgs/State.h>
 #include <nav_msgs/Odometry.h>
+#include <std_srvs/Trigger.h>
+
 #include <state_machine_def/state_machine_def.hpp>
 
 namespace ariitk::carrier_state_machine {
@@ -78,18 +83,32 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     // clang-format on
 
   private:
-    void publishPoseCommand(const double& x, const double& y, const double& z);
+    void goToPosition(const double& x, const double& y, const double& z);
     void odometryCallback(const nav_msgs::Odometry& odom);
+    void stateCallback(const mavros_msgs::State& state);
+
+    void switchMode(const std::string& des_mode);
 
     geometry_msgs::Pose mav_pose_;
+    geometry_msgs::Pose home_pose_;  // TODO: override hardcoding/parametrization
 
     ros::Subscriber odom_sub_;
+    ros::Subscriber mav_state_sub_;
+
     ros::Publisher cmd_pose_pub_;
+
+    ros::ServiceClient arming_client_;
+    ros::ServiceClient mode_client_;
+    ros::ServiceClient deploy_client_;
 
     bool verbose_;
 
+    double call_rate_;
     double hover_height_;
     double land_height_;
+    double dist_err_;
+
+    mavros_msgs::State mav_state_;
 };
 
 }  // namespace ariitk::carrier_state_machine

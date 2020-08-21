@@ -10,7 +10,7 @@
 #include <cxxabi.h>
 #include <ros/ros.h>
 
-#define echo(X) ROS_WARN_STREAM("[FSM]: " << X)  // TODO: change name of macro
+#define FSM_INFO(X) ROS_WARN_STREAM("[FSM]: " << X)  // TODO: change name of macro
 
 namespace ariitk::state_machine {
 
@@ -28,22 +28,21 @@ class FSMDef : public boost::msm::front::state_machine_def<FSMClass> {
     template<class T, bool V = false>
     struct State : public boost::msm::front::state<> {
         State() {
-            int status;                                                         // TODO: replace with placeholder
-            state_name = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);  // TODO: Discard namespacing
+            state_name = abi::__cxa_demangle(typeid(T).name(), 0, 0, nullptr);  // TODO: Discard namespacing
             verbose = V;
         }
 
         template<class Event, class FSM>
         void on_entry(Event const&, FSM&) {
             if (verbose) {
-                echo("Entered " << state_name << " state");
+                FSM_INFO("Entered " << state_name << " state");
             }
         }
 
         template<class Event, class FSM>
         void on_exit(Event const&, FSM&) {
             if (verbose) {
-                echo("Exited " << state_name << " state");
+                FSM_INFO("Exited " << state_name << " state");
             }
         }
 

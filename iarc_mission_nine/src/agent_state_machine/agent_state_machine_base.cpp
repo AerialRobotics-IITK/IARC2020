@@ -15,12 +15,12 @@ void StateMachineBase::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
 }
 
 void StateMachineBase::initialize(const Initialize& cmd) {
-    echo("Taking off!");
+    FSM_INFO("Taking off!");
     publishPoseCommand(mav_pose_.position.x, mav_pose_.position.y, hover_height_);
 }
 
 void StateMachineBase::findMast(const Search& cmd) {
-    echo("Searching for Mast...");
+    FSM_INFO("Searching for Mast...");
     mast_detected = true;
 
     while (ros::ok() && !mast_detected) {
@@ -29,7 +29,7 @@ void StateMachineBase::findMast(const Search& cmd) {
 }
 
 void StateMachineBase::detachBlock(const RemoveBlock& cmd) {
-    echo("Removing block on mast...");
+    FSM_INFO("Removing block on mast...");
     mast_detected = false;
 
     while (ros::ok() && mast_detected) {
@@ -38,7 +38,7 @@ void StateMachineBase::detachBlock(const RemoveBlock& cmd) {
 }
 
 void StateMachineBase::attachBlock(const PlaceBlock& cmd) {
-    echo("Placing block on mast...");
+    FSM_INFO("Placing block on mast...");
     has_payload = false;
 
     while (ros::ok() && has_payload) {
@@ -47,12 +47,12 @@ void StateMachineBase::attachBlock(const PlaceBlock& cmd) {
 }
 
 void StateMachineBase::hover(const Hold& cmd) {
-    echo("In Position Hold");
+    FSM_INFO("In Position Hold");
     publishPoseCommand(mav_pose_.position.x, mav_pose_.position.y, cmd.hold_height);
 }
 
 void StateMachineBase::land(const Terminate& cmd) {
-    echo("Landing!");
+    FSM_INFO("Landing!");
     publishPoseCommand(mav_pose_.position.x, mav_pose_.position.y, land_height_);
 }
 

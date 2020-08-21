@@ -25,7 +25,7 @@ void StateMachineBase::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
 }
 
 void StateMachineBase::takeoff(const Takeoff& cmd) {
-    echo("Taking off!");
+    FSM_INFO("Taking off!");
 
     mavros_msgs::CommandBool arm_msg;
     arm_msg.request.value = true;
@@ -49,7 +49,7 @@ void StateMachineBase::takeoff(const Takeoff& cmd) {
 }
 
 void StateMachineBase::reachShip(const Travel& cmd) {
-    echo("Travelling to Ship!");
+    FSM_INFO("Travelling to Ship!");
     goToPosition(mav_pose_.position.x + 2.0, mav_pose_.position.y + 2.0, hover_height_);  // just for testing
 
     // while (ros::ok()) {
@@ -58,7 +58,7 @@ void StateMachineBase::reachShip(const Travel& cmd) {
 }
 
 void StateMachineBase::deployAgent(const Detach& cmd) {
-    echo("Dropping Agent...");
+    FSM_INFO("Dropping Agent...");
 
     has_payload = false;  // temporary shortcircuit
     std_srvs::Trigger deploy_msg;
@@ -80,19 +80,19 @@ void StateMachineBase::deployAgent(const Detach& cmd) {
 }
 
 void StateMachineBase::returnHome(const Return& cmd) {
-    echo("Return to Land");
+    FSM_INFO("Return to Land");
 
     // TODO: Go back home and land
 }
 
 void StateMachineBase::hover(const Hold& cmd) {
-    echo("In Position Hold");
+    FSM_INFO("In Position Hold");
     goToPosition(mav_pose_.position.x, mav_pose_.position.y, cmd.hold_height);
     switchMode("AUTO.LOITER");
 }
 
 void StateMachineBase::land(const Terminate& cmd) {
-    echo("Landing!");
+    FSM_INFO("Landing!");
     goToPosition(mav_pose_.position.x, mav_pose_.position.y, land_height_);
     switchMode("AUTO.LAND");
 }
@@ -131,7 +131,7 @@ void StateMachineBase::switchMode(const std::string& des_mode) {
 }
 
 void StateMachineBase::goToPosition(const double& x, const double& y, const double& z) {
-    echo("Publishing pose setpoint ... ");
+    FSM_INFO("Publishing pose setpoint ... ");
     geometry_msgs::PoseStamped cmd_msg;
 
     cmd_msg.header.stamp = ros::Time::now();
@@ -144,7 +144,7 @@ void StateMachineBase::goToPosition(const double& x, const double& y, const doub
 
     ros::Rate loop_rate(call_rate_);
 
-    echo("Waiting to reach setpoint ... ");
+    FSM_INFO("Waiting to reach setpoint ... ");
     double dist = pow((mav_pose_.position.x - x), 2) + pow((mav_pose_.position.y - y), 2) + pow((mav_pose_.position.z - z), 2);
     while (ros::ok() && dist > dist_err_) {
         loop_rate.sleep();

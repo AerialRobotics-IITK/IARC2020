@@ -13,7 +13,7 @@ class Initialization : public ariitk::state_machine::Behaviour {
   public:
     typedef ariitk::state_machine::Behaviour::Event Event;
 
-    void action(const Event& evt) override;
+    void execute(const Event& evt) override;
     void init(ros::NodeHandle nh, ros::NodeHandle nh_private);
 
   private:
@@ -33,6 +33,7 @@ class Initialization : public ariitk::state_machine::Behaviour {
 
     double call_rate_;
     double hover_height_;
+    double distance_error_;
 };
 
 }  // namespace ariitk::agent_state_machine

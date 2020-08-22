@@ -15,7 +15,7 @@ class Behaviour {
         return true;
     }
 
-    virtual void action(const Event& evt){};
+    virtual void execute(const Event& evt){};
 };
 
 }  // namespace ariitk::state_machine

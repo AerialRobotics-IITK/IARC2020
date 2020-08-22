@@ -5,6 +5,7 @@ namespace ariitk::agent_state_machine {
 void Initialization::init(ros::NodeHandle nh, ros::NodeHandle nh_private) {
     nh_private.getParam("hover_height", hover_height_);
     nh_private.getParam("call_rate", call_rate_);
+    nh_private.getParam("distance_error", distance_error_);
 
     odom_sub_ = nh.subscribe("odometry", 1, &Initialization::odometryCallback, this);
     mav_state_sub_ = nh.subscribe("mavros/state", 1, &Initialization::stateCallback, this);
@@ -13,7 +14,7 @@ void Initialization::init(ros::NodeHandle nh, ros::NodeHandle nh_private) {
     takeoff_client_ = nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/takeoff");
 }
 
-void Initialization::action(const Event& evt) {
+void Initialization::execute(const Event& evt) {
     // waitForDeploy();
     if (!arm()) {
         return;
@@ -25,7 +26,7 @@ void Initialization::action(const Event& evt) {
 
     // wait for takeoff to complete
     ros::Rate loop_rate(call_rate_);
-    while (ros::ok() && (mav_pose_.position.z < hover_height_ - 0.05)) {  // TODO: use distance errors
+    while (ros::ok() && (mav_pose_.position.z < hover_height_ - distance_error_)) {
         ros::spinOnce();
         loop_rate.sleep();
     }
@@ -65,6 +66,7 @@ bool Initialization::takeoff() {
     ros::Rate loop_rate(call_rate_);
     uint attempts = 0, max_attempts = 69;
 
+    // TODO: Try offboard instead of takeoff service
     while (ros::ok() && takeoff_msg.response.success != true && mav_state_.mode != "AUTO.TAKEOFF") {
         loop_rate.sleep();
         takeoff_client_.call(takeoff_msg);

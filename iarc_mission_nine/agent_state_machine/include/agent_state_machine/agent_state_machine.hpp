@@ -1,8 +1,9 @@
 #pragma once
 
-#include <agent_state_machine/agent_state_machine_base.hpp>
 #include <future>
 #include <std_msgs/String.h>
+
+#include <agent_state_machine/agent_state_machine_base.hpp>
 
 namespace ariitk::agent_state_machine {
 
@@ -13,12 +14,19 @@ class AgentStateMachine : public StateMachineBase {
 
   private:
     void publishCurrState();
+
     template<class Event>
     void performTask();
+
+    template<class Behaviour>
+    inline void executeBehaviour() {
+        machine_.process_event(Behaviour::Event());
+    }
 
     StateMachineBackend machine_;
 
     ros::Publisher state_pub_;
+    ros::Timer state_timer_;
 
     double poll_rate_;
     bool verbose_;

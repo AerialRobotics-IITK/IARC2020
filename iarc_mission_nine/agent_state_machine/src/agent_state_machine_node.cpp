@@ -9,5 +9,5 @@ int main(int argc, char** argv) {
     ros::NodeHandle nh_private("~");
 
     AgentStateMachine fsm(nh, nh_private);
-    fsm.spin();
+    fsm.run();
 }

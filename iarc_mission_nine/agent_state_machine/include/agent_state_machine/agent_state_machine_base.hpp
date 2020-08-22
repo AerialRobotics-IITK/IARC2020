@@ -3,7 +3,13 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
 
+#include <agent_state_machine/behaviours/attach_block.hpp>
+#include <agent_state_machine/behaviours/detach_block.hpp>
+#include <agent_state_machine/behaviours/hovering.hpp>
 #include <agent_state_machine/behaviours/initialization.hpp>
+#include <agent_state_machine/behaviours/mast_search.hpp>
+#include <agent_state_machine/behaviours/termination.hpp>
+
 #include <state_machine_definition/state_machine.hpp>
 
 namespace ariitk::agent_state_machine {
@@ -34,13 +40,13 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     bool isMastVisible(const Event& cmd) {
         return mast_detected;
     }
-    bool needMastSearch(const Search& cmd) {
+    bool needMastSearch(const MastSearch::Event& cmd) {
         return !mast_detected;
     }
-    bool hasNoPayload(const Hold& cmd) {
+    bool hasNoPayload(const Hovering::Event& cmd) {
         return !has_payload;
     }
-    bool canAttachBlock(const PlaceBlock& cmd) {
+    bool canAttachBlock(const AttachBlock::Event& cmd) {
         return (has_payload && mast_detected);
     }
 
@@ -50,9 +56,9 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
 
     void initialize(const Initialization::Event& cmd);
     void findMast(const MastSearch::Event& cmd);
-    void hover(const Hover::Event& cmd);
-    void detachBlock(const RemoveBlock::Event& cmd);
-    void attachBlock(const PlaceBlock::Event& cmd);
+    void hover(const Hovering::Event& cmd);
+    void detachBlock(const DetachBlock::Event& cmd);
+    void attachBlock(const AttachBlock::Event& cmd);
     void land(const Termination::Event& cmd);
 
     // clang-format off
@@ -64,15 +70,15 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
                        row<    Hover    ,  MastSearch::Event       ,  Explore  ,  &StateMachineBase::findMast     ,  &StateMachineBase::needMastSearch   >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
-                       row<    Explore  ,  Hover::Event         ,  Hover    ,  &StateMachineBase::hover        ,  &StateMachineBase::isMastVisible    >,
+                       row<    Explore  ,  Hovering::Event         ,  Hover    ,  &StateMachineBase::hover        ,  &StateMachineBase::isMastVisible    >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
-                       row<    Hover    ,  RemoveBlock::Event  ,  Detach   ,  &StateMachineBase::detachBlock  ,  &StateMachineBase::isMastVisible    >,
+                       row<    Hover    ,  DetachBlock::Event  ,  Detach   ,  &StateMachineBase::detachBlock  ,  &StateMachineBase::isMastVisible    >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
-                     a_row<    Detach   ,  Hover::Event        ,  Hover    ,  &StateMachineBase::hover                                               >,
+                     a_row<    Detach   ,  Hovering::Event        ,  Hover    ,  &StateMachineBase::hover                                               >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
-                       row<    Hover    ,  PlaceBlock::Event   ,  Attach   ,  &StateMachineBase::attachBlock  ,  &StateMachineBase::canAttachBlock   >,
+                       row<    Hover    ,  AttachBlock::Event   ,  Attach   ,  &StateMachineBase::attachBlock  ,  &StateMachineBase::canAttachBlock   >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
-                       row<    Attach   ,  Hover::Event         ,  Hover    ,  &StateMachineBase::hover        ,  &StateMachineBase::hasNoPayload     >,
+                       row<    Attach   ,  Hovering::Event         ,  Hover    ,  &StateMachineBase::hover        ,  &StateMachineBase::hasNoPayload     >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
                      a_row<    Hover    ,  Termination::Event    ,  Rest     ,  &StateMachineBase::land                                                >
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
@@ -80,14 +86,16 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     // clang-format on
 
   private:
+    void initializeBehaviours(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
+
     bool verbose_;
 
     // behaviour objects
     Initialization init_behaviour_;
-    Hover hover_behaviour_;
+    Hovering hover_behaviour_;
     MastSearch search_behaviour_;
-    RemoveBlock detach_behaviour_;
-    PlaceBlock attach_behaviour_;
+    DetachBlock detach_behaviour_;
+    AttachBlock attach_behaviour_;
     Termination land_behaviour_;
 };
 

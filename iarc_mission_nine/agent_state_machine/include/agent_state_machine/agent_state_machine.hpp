@@ -10,17 +10,17 @@ namespace ariitk::agent_state_machine {
 class AgentStateMachine : public StateMachineBase {
   public:
     AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
-    void spin();
+    void run();
 
   private:
-    void publishCurrState();
+    void publishCurrState(const ros::TimerEvent&);
 
     template<class Event>
     void performTask();
 
     template<class Behaviour>
     inline void executeBehaviour() {
-        machine_.process_event(Behaviour::Event());
+        machine_.process_event(typename Behaviour::Event());
     }
 
     StateMachineBackend machine_;

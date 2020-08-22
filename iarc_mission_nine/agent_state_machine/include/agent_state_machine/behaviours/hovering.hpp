@@ -4,7 +4,7 @@
 
 namespace ariitk::agent_state_machine {
 
-class MastSearch : public ariitk::state_machine::Behaviour {
+class Hovering : public ariitk::state_machine::Behaviour {
   public:
     typedef ariitk::state_machine::Behaviour::Event Event;
 

@@ -26,29 +26,29 @@ void StateMachineBase::initialize(const Initialization::Event& cmd) {
     init_behaviour_.execute(cmd);
 }
 
-void StateMachineBase::findMast(const Search& cmd) {
+void StateMachineBase::findMast(const MastSearch::Event& cmd) {
     FSM_INFO("Searching for Mast...");
     search_behaviour_.execute(cmd);
-    mast_detected = true  // temporary shortcircuit
+    mast_detected = true;  // temporary shortcircuit
 }
 
-void StateMachineBase::detachBlock(const RemoveBlock& cmd) {
+void StateMachineBase::detachBlock(const DetachBlock::Event& cmd) {
     FSM_INFO("Removing block on mast...");
     detach_behaviour_.execute(cmd);
 }
 
-void StateMachineBase::attachBlock(const PlaceBlock& cmd) {
+void StateMachineBase::attachBlock(const AttachBlock::Event& cmd) {
     FSM_INFO("Placing block on mast...");
     attach_behaviour_.execute(cmd);
     has_payload = false;  // temporary shortcircuit
 }
 
-void StateMachineBase::hover(const Hold& cmd) {
+void StateMachineBase::hover(const Hovering::Event& cmd) {
     FSM_INFO("In Position Hold");
     hover_behaviour_.execute(cmd);
 }
 
-void StateMachineBase::land(const Terminate& cmd) {
+void StateMachineBase::land(const Termination::Event& cmd) {
     FSM_INFO("Landing!");
     land_behaviour_.execute(cmd);
 }

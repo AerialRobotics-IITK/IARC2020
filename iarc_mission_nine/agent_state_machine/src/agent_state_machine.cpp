@@ -10,7 +10,7 @@ AgentStateMachine::AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_pr
     machine_.init(nh, nh_private);
 
     state_pub_ = nh_private.advertise<std_msgs::String>("curr_state", 1);
-    state_timer_ = nh_private.createTimer(ros::Duration(poll_rate_), publishCurrState);
+    state_timer_ = nh_private.createTimer(ros::Duration(poll_rate_), &AgentStateMachine::publishCurrState, this);
 
     // Fly!
     executeBehaviour<Initialization>();
@@ -18,11 +18,11 @@ AgentStateMachine::AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_pr
 
 void AgentStateMachine::run() {
     // First, look for the mast
-    performTask<Search>();  // exits when mast is found
+    performTask<MastSearch>();  // exits when mast is found
     // Second, remove the existing block
-    performTask<RemoveBlock>();  // exits once block is removed
+    performTask<DetachBlock>();  // exits once block is removed
     // Now, attach payload in place of the block
-    performTask<PlaceBlock>();  // exits once block is in place
+    performTask<AttachBlock>();  // exits once block is in place
     // Die!
     executeBehaviour<Termination>();
 
@@ -33,10 +33,10 @@ template<class Event>
 void AgentStateMachine::performTask() {
     // since every task must come back to hover, these two calls are always together
     executeBehaviour<Event>();
-    executeBehaviour<Hover>();  // hover at the current height by default
+    executeBehaviour<Hovering>();  // hover at the current height by default
 }
 
-void AgentStateMachine::publishCurrState() {
+void AgentStateMachine::publishCurrState(const ros::TimerEvent&) {
     ros::Rate loop_rate(poll_rate_);
 
     std_msgs::String state_msg;

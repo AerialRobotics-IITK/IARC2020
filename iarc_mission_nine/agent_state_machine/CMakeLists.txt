@@ -7,10 +7,20 @@ catkin_simple(ALL_DEPS_REQUIRED)
 add_definitions(-std=c++17)
 set(CMAKE_BUILD_TYPE Release)
 
+cs_add_library(agent_state
+    src/agent_state/agent_state.cpp
+)
+target_link_libraries(agent_state ${catkin_LIBRARIES})
+
 cs_add_library(agent_behaviours
     src/behaviours/initialization.cpp
+    src/behaviours/hovering.cpp
+    src/behaviours/termination.cpp
+    src/behaviours/mast_search.cpp
+    src/behaviours/attach_block.cpp
+    src/behaviours/detach_block.cpp
 )
-target_link_libraries(agent_behaviours ${catkin_LIBRARIES})
+target_link_libraries(agent_behaviours agent_state)
 
 cs_add_library(agent_state_machine_lib
     src/agent_state_machine_base.cpp

@@ -2,7 +2,7 @@
 
 namespace ariitk::agent_state_machine {
 
-void MastSearch::init(ros::NodeHandle nh, ros::NodeHandle nh_private) {
+void MastSearch::init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std::shared_ptr<AgentState> state_ptr) {
 }
 
 void MastSearch::execute(const Event& evt) {

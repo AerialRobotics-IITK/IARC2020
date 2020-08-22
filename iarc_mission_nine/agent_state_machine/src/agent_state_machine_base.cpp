@@ -8,17 +8,20 @@ void StateMachineBase::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     has_payload = true;
     mast_detected = false;
 
+    state_ptr_ = std::make_shared<AgentState>(AgentState());
+    state_ptr_->init(nh, nh_private);
+
     // initialize behaviours
     initializeBehaviours(nh, nh_private);
 }
 
 void StateMachineBase::initializeBehaviours(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
-    init_behaviour_.init(nh, nh_private);
-    hover_behaviour_.init(nh, nh_private);
-    search_behaviour_.init(nh, nh_private);
-    detach_behaviour_.init(nh, nh_private);
-    attach_behaviour_.init(nh, nh_private);
-    land_behaviour_.init(nh, nh_private);
+    init_behaviour_.init(nh, nh_private, state_ptr_);
+    // hover_behaviour_.init(nh, nh_private, state_ptr_);
+    // search_behaviour_.init(nh, nh_private, state_ptr_);
+    // detach_behaviour_.init(nh, nh_private, state_ptr_);
+    // attach_behaviour_.init(nh, nh_private, state_ptr_);
+    // land_behaviour_.init(nh, nh_private, state_ptr_);
 }
 
 void StateMachineBase::initialize(const Initialization::Event& cmd) {

@@ -10,6 +10,7 @@
 #include <agent_state_machine/behaviours/mast_search.hpp>
 #include <agent_state_machine/behaviours/termination.hpp>
 
+#include <agent_state_machine/agent_state/agent_state.hpp>
 #include <state_machine_definition/state_machine.hpp>
 
 namespace ariitk::agent_state_machine {
@@ -89,6 +90,7 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     void initializeBehaviours(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
 
     bool verbose_;
+    std::shared_ptr<AgentState> state_ptr_;
 
     // behaviour objects
     Initialization init_behaviour_;

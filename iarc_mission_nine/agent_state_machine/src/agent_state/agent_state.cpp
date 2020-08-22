@@ -5,6 +5,15 @@ namespace ariitk::agent_state_machine {
 void AgentState::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     odom_sub_ = nh.subscribe("odometry", 1, &AgentState::odometryCallback, this);
     state_sub_ = nh.subscribe("mavros/state", 1, &AgentState::stateCallback, this);
+
+    pose_.position.z = DBL_MIN;
+    ros::Rate loop_rate(2);
+
+    // wait for first message
+    while (pose_.position.z == DBL_MIN) {
+        ros::spinOnce();
+        loop_rate.sleep();
+    }
 }
 
 void AgentState::odometryCallback(const nav_msgs::Odometry& odom) {

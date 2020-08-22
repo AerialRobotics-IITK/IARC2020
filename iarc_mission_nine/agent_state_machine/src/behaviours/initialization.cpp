@@ -2,13 +2,12 @@
 
 namespace ariitk::agent_state_machine {
 
-void Initialization::init(ros::NodeHandle nh, ros::NodeHandle nh_private) {
+void Initialization::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private, const std::shared_ptr<AgentState> state_ptr) {
     nh_private.getParam("hover_height", hover_height_);
     nh_private.getParam("call_rate", call_rate_);
     nh_private.getParam("distance_error", distance_error_);
 
-    odom_sub_ = nh.subscribe("odometry", 1, &Initialization::odometryCallback, this);
-    mav_state_sub_ = nh.subscribe("mavros/state", 1, &Initialization::stateCallback, this);
+    mav_state_ = state_ptr;
 
     arming_client_ = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
     takeoff_client_ = nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/takeoff");
@@ -26,7 +25,7 @@ void Initialization::execute(const Event& evt) {
 
     // wait for takeoff to complete
     ros::Rate loop_rate(call_rate_);
-    while (ros::ok() && (mav_pose_.position.z < hover_height_ - distance_error_)) {
+    while (ros::ok() && (mav_state_->getPose().position.z < hover_height_ - distance_error_)) {
         ros::spinOnce();
         loop_rate.sleep();
     }
@@ -42,8 +41,7 @@ bool Initialization::arm() {
     ros::Rate loop_rate(call_rate_);
     uint attempts = 0, max_attempts = 69;
 
-    while (ros::ok() && arm_msg.response.success != true && mav_state_.armed != true) {
-        loop_rate.sleep();
+    while (ros::ok() && arm_msg.response.success != true && mav_state_->getState().armed != true) {
         arming_client_.call(arm_msg);
         ros::spinOnce();
 
@@ -51,8 +49,9 @@ bool Initialization::arm() {
             ROS_FATAL("Arming unsuccessful!");
             return false;
         }
-    }
 
+        loop_rate.sleep();
+    }
     return true;
 }
 
@@ -67,8 +66,7 @@ bool Initialization::takeoff() {
     uint attempts = 0, max_attempts = 69;
 
     // TODO: Try offboard instead of takeoff service
-    while (ros::ok() && takeoff_msg.response.success != true && mav_state_.mode != "AUTO.TAKEOFF") {
-        loop_rate.sleep();
+    while (ros::ok() && takeoff_msg.response.success != true && mav_state_->getState().mode != "AUTO.TAKEOFF") {
         takeoff_client_.call(takeoff_msg);
         ros::spinOnce();
 
@@ -76,18 +74,11 @@ bool Initialization::takeoff() {
             ROS_FATAL("Takeoff unsuccessful!");
             return false;
         }
+
+        loop_rate.sleep();
     }
 
     return true;
-}
-
-void Initialization::odometryCallback(const nav_msgs::Odometry& odom) {
-    mav_pose_ = odom.pose.pose;
-    BHV_INFO(mav_pose_.position.z);
-}
-
-void Initialization::stateCallback(const mavros_msgs::State& state) {
-    mav_state_ = state;
 }
 
 }  // namespace ariitk::agent_state_machine

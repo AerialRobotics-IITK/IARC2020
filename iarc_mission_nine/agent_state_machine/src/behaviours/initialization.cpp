@@ -1,4 +1,4 @@
-#include <agent_transition_behaviours/initialization.hpp>
+#include <agent_state_machine/behaviours/initialization.hpp>
 
 namespace ariitk::agent_state_machine {
 
@@ -25,7 +25,7 @@ void Initialization::action(const Event& evt) {
 
     // wait for takeoff to complete
     ros::Rate loop_rate(call_rate_);
-    while (ros::ok() && (mav_pose_.position.z < hover_height_ - 0.05)) {
+    while (ros::ok() && (mav_pose_.position.z < hover_height_ - 0.05)) {  // TODO: use distance errors
         ros::spinOnce();
         loop_rate.sleep();
     }

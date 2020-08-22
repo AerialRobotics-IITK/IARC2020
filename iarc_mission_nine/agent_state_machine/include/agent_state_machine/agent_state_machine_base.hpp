@@ -3,7 +3,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
 
-#include <agent_transition_behaviours/initialization.hpp>
+#include <agent_state_machine/behaviours/initialization.hpp>
 #include <state_machine_definition/state_machine.hpp>
 
 namespace ariitk::agent_state_machine {

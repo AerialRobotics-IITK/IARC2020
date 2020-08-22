@@ -8,8 +8,8 @@ add_definitions(-std=c++17)
 set(CMAKE_BUILD_TYPE Release)
 
 cs_add_library(carrier_state_machine_lib
-    src/carrier_state_machine/carrier_state_machine_base.cpp
-    src/carrier_state_machine/carrier_state_machine.cpp
+    src/carrier_state_machine_base.cpp
+    src/carrier_state_machine.cpp
 )
 target_link_libraries(carrier_state_machine_lib ${catkin_LIBRARIES})
 

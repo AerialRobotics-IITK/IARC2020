@@ -1,6 +1,7 @@
 #pragma once
 
 #include <geometry_msgs/PoseStamped.h>
+#include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
@@ -19,6 +20,8 @@ class AgentState {
         return state_;
     };
 
+    bool switchMode(const std::string& des_mode);
+
   private:
     void odometryCallback(const nav_msgs::Odometry& odom);
     void stateCallback(const mavros_msgs::State& state);
@@ -26,8 +29,12 @@ class AgentState {
     ros::Subscriber odom_sub_;
     ros::Subscriber state_sub_;
 
+    ros::ServiceClient mode_client_;
+
     geometry_msgs::Pose pose_;
     mavros_msgs::State state_;
+
+    double call_rate_;
 };
 
 }  // namespace ariitk::agent_state_machine

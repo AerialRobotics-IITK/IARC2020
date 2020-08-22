@@ -10,11 +10,10 @@ void Initialization::init(ros::NodeHandle nh, ros::NodeHandle nh_private) {
     mav_state_sub_ = nh.subscribe("mavros/state", 1, &Initialization::stateCallback, this);
 
     arming_client_ = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
-    mode_client_ = nh.serviceClient<mavros_msgs::CommandTOL>("mavros/set_mode");
+    takeoff_client_ = nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/takeoff");
 }
 
 void Initialization::action(const Event& evt) {
-    init(evt.nh, evt.nh_private);
     // waitForDeploy();
     if (!arm()) {
         return;

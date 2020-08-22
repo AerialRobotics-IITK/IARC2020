@@ -7,7 +7,7 @@
 #include <nav_msgs/Odometry.h>
 #include <std_srvs/Trigger.h>
 
-#include <state_machine_def/state_machine_def.hpp>
+#include <state_machine_definition/state_machine.hpp>
 
 namespace ariitk::carrier_state_machine {
 

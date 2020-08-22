@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>state_machine_definition</name>
+    <version>0.0.0</version>
+    <description>The state_machine_definition package</description>
+
+    <maintainer email="ashwins@iitk.ac.in">Ashwin Shenai</maintainer>
+
+    <license>TODO</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin_simple</buildtool_depend>
+
+    <build_depend>roscpp</build_depend>
+</package>

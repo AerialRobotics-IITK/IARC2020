@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>iarc_mission_nine</name>
+    <name>agent_state_machine</name>
     <version>0.0.0</version>
-    <description>The iarc_mission_nine package</description>
+    <description>The agent_state_machine package</description>
 
     <maintainer email="ashwins@iitk.ac.in">Ashwin Shenai</maintainer>
 
@@ -16,11 +16,9 @@
     <depend>geometry_msgs</depend>
     <depend>mavros_msgs</depend>
 
-    <depend>iarc_simulation_tools</depend>
+    <depend>state_machine_definition</depend>
 
-    <depend>dubins_trajectory_generator</depend>
     <depend>mast_finder</depend>
-
     <depend>plate_detector</depend>
     <depend>led_detector</depend>
     <depend>feature_detection</depend>

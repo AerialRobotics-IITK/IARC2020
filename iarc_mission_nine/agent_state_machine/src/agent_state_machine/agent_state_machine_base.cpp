@@ -12,12 +12,15 @@ void StateMachineBase::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
 
     odom_sub_ = nh.subscribe("odometry", 1, &StateMachineBase::odometryCallback, this);
     cmd_pose_pub_ = nh.advertise<geometry_msgs::PoseStamped>("command/pose", 1);
+
+    // initialize behaviours
+    init_behaviour_.init(nh, nh_private);
 }
 
-// void StateMachineBase::initialize(const Initialize& cmd) {
-//     // FSM_INFO("Taking off!");
-//     // publishPoseCommand(mav_pose_.position.x, mav_pose_.position.y, hover_height_);
-// }
+void StateMachineBase::initialize(const Initialization::Event& cmd) {
+    FSM_INFO("Taking off!");
+    init_behaviour_.action(cmd);
+}
 
 void StateMachineBase::findMast(const Search& cmd) {
     FSM_INFO("Searching for Mast...");

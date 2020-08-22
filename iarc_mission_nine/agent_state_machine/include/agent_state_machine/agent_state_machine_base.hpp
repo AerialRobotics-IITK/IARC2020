@@ -4,7 +4,7 @@
 #include <nav_msgs/Odometry.h>
 
 #include <agent_transition_behaviours/initialization.hpp>
-#include <state_machine_def/state_machine_def.hpp>
+#include <state_machine_definition/state_machine.hpp>
 
 namespace ariitk::agent_state_machine {
 
@@ -25,7 +25,7 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
 
     typedef Rest initial_state;
 
-    // Transition events
+    // Transition events // TODO: remove after porting to new structure
     struct Initialize : public Command {};
     struct Search : public Command {};
     struct RemoveBlock : public Command {};
@@ -59,9 +59,7 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     }
 
     // Transition actions
-    void initialize(const Initialization::Event& cmd) {
-        init_behaviour_.action(cmd);
-    };
+    void initialize(const Initialization::Event& cmd);
     void findMast(const Search& cmd);
     void hover(const Hold& cmd);
     void detachBlock(const RemoveBlock& cmd);
@@ -93,6 +91,7 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     // clang-format on
 
   private:
+    // FIXME: remove unused stuff
     void publishPoseCommand(const double& x, const double& y, const double& z);
     void odometryCallback(const nav_msgs::Odometry& odom);
 

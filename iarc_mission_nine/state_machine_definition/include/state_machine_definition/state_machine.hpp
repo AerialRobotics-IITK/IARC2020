@@ -50,6 +50,7 @@ class FSMDef : public boost::msm::front::state_machine_def<FSMClass> {
         bool verbose;
     };
 
+    // TODO: delete after porting to new structure
     struct Command {
         Command(){};
     };

@@ -12,11 +12,11 @@ AgentStateMachine::AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_pr
     state_pub_ = nh_private.advertise<std_msgs::String>("curr_state", 1);
 
     // Fly!
-    machine_.process_event(Initialization::Event(nh, nh_private));
+    machine_.process_event(Initialization::Event());
 }
 
-void AgentStateMachine::spin() {
-    auto state_publish_thread = std::async(std::launch::async, [this] { publishCurrState(); });
+void AgentStateMachine::spin() {                                                                 // TODO: rename
+    auto state_publish_thread = std::async(std::launch::async, [this] { publishCurrState(); });  // TODO: Replace with ros::Timer
 
     // First, look for the mast
     performTask<Search>();  // exits when mast is found

@@ -8,14 +8,7 @@ namespace ariitk::state_machine {
 
 class Behaviour {
   public:
-    struct Event {
-        ros::NodeHandle nh;
-        ros::NodeHandle nh_private;
-
-        Event(ros::NodeHandle& nh, ros::NodeHandle& nh_private)
-            : nh(nh)
-            , nh_private(nh_private){};
-    };
+    struct Event {};
 
     virtual bool guard(const Event& evt) {
         // allow transitions by default

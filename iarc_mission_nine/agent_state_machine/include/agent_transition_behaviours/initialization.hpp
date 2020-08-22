@@ -5,7 +5,7 @@
 #include <mavros_msgs/State.h>
 #include <nav_msgs/Odometry.h>
 
-#include <state_machine_def/state_transition_behaviour.hpp>
+#include <state_machine_definition/state_transition_behaviour.hpp>
 
 namespace ariitk::agent_state_machine {
 

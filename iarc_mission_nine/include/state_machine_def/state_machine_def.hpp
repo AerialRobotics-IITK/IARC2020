@@ -10,7 +10,7 @@
 #include <cxxabi.h>
 #include <ros/ros.h>
 
-#define FSM_INFO(X) ROS_WARN_STREAM("[FSM]: " << X)  // TODO: change name of macro
+#define FSM_INFO(X) ROS_WARN_STREAM("[FSM]: " << X)
 
 namespace ariitk::state_machine {
 
@@ -46,7 +46,7 @@ class FSMDef : public boost::msm::front::state_machine_def<FSMClass> {
             }
         }
 
-        char* state_name;  // TODO: replace with string
+        std::string state_name;
         bool verbose;
     };
 

@@ -2,6 +2,8 @@
 
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
+
+#include <agent_transition_behaviours/initialization.hpp>
 #include <state_machine_def/state_machine_def.hpp>
 
 namespace ariitk::agent_state_machine {
@@ -57,7 +59,9 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     }
 
     // Transition actions
-    void initialize(const Initialize& cmd);
+    void initialize(const Initialization::Event& cmd) {
+        init_behaviour_.action(cmd);
+    };
     void findMast(const Search& cmd);
     void hover(const Hold& cmd);
     void detachBlock(const RemoveBlock& cmd);
@@ -69,7 +73,7 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
         : boost::mpl::vector<
               //      Type     Start          Event          Next            Action                         Guard
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
-                     a_row<    Rest     ,  Initialize   ,  Hover    ,  &StateMachineBase::initialize                                             >,
+                     a_row<    Rest     ,  Initialization::Event   ,  Hover    ,  &StateMachineBase::initialize                                            >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
                        row<    Hover    ,  Search       ,  Explore  ,  &StateMachineBase::findMast     ,  &StateMachineBase::needMastSearch   >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ----------------------------------- +++
@@ -101,6 +105,8 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
 
     double hover_height_;
     double land_height_;
+
+    Initialization init_behaviour_;
 };
 
 }  // namespace ariitk::agent_state_machine

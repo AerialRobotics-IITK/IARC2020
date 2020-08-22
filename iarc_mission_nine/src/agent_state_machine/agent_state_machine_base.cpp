@@ -14,10 +14,10 @@ void StateMachineBase::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     cmd_pose_pub_ = nh.advertise<geometry_msgs::PoseStamped>("command/pose", 1);
 }
 
-void StateMachineBase::initialize(const Initialize& cmd) {
-    FSM_INFO("Taking off!");
-    publishPoseCommand(mav_pose_.position.x, mav_pose_.position.y, hover_height_);
-}
+// void StateMachineBase::initialize(const Initialize& cmd) {
+//     // FSM_INFO("Taking off!");
+//     // publishPoseCommand(mav_pose_.position.x, mav_pose_.position.y, hover_height_);
+// }
 
 void StateMachineBase::findMast(const Search& cmd) {
     FSM_INFO("Searching for Mast...");

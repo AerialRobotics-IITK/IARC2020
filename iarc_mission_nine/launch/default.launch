@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="agent_name" default="iris"/>
-    <arg name="agent_type" default="iris"/>
+    <arg name="agent_type" default="iris_fpv_cam"/>
 
     <arg name="carrier_name" default="raptor"/>
     <arg name="carrier_type" default="generic_quadplane"/>

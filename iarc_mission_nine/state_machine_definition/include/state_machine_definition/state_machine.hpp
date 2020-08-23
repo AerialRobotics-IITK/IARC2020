@@ -28,7 +28,7 @@ class FSMDef : public boost::msm::front::state_machine_def<FSMClass> {
     template<class T, bool V = false>
     struct State : public boost::msm::front::state<> {
         State() {
-            state_name = abi::__cxa_demangle(typeid(T).name(), 0, 0, nullptr);  // TODO: Discard namespacing
+            state_name = abi::__cxa_demangle(typeid(T).name(), 0, 0, nullptr);
             verbose = V;
         }
 
@@ -48,11 +48,6 @@ class FSMDef : public boost::msm::front::state_machine_def<FSMClass> {
 
         std::string state_name;
         bool verbose;
-    };
-
-    // TODO: delete after porting to new structure
-    struct Command {
-        Command(){};
     };
 };
 

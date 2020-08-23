@@ -7,6 +7,14 @@
 #include <nav_msgs/Odometry.h>
 #include <std_srvs/Trigger.h>
 
+#include <carrier_state_machine/behaviours/deploy_agent.hpp>
+#include <carrier_state_machine/behaviours/hovering.hpp>
+#include <carrier_state_machine/behaviours/reach_ship.hpp>
+#include <carrier_state_machine/behaviours/return_home.hpp>
+#include <carrier_state_machine/behaviours/takeoff.hpp>
+#include <carrier_state_machine/behaviours/termination.hpp>
+
+#include <carrier_state_machine/carrier_state/carrier_state.hpp>
 #include <state_machine_definition/state_machine.hpp>
 
 namespace ariitk::carrier_state_machine {
@@ -27,88 +35,61 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
 
     typedef Rest initial_state;
 
-    // Transition events
-    struct Takeoff : public Command {};
-    struct Travel : public Command {};
-    struct Detach : public Command {};
-    struct Return : public Command {};
-    struct Terminate : public Command {};
-    struct Hold : public Command {
-        Hold(const double& height)
-            : hold_height(height) {
-        }
-        double hold_height;
-    };
-
     // Guard variables
     bool has_payload;
     double curr_height;
 
     // Transition Guards
-    bool isAgentDeployed(const Return& cmd) {
+    bool isAgentDeployed(const ReturnHome::Event& cmd) {
         return !has_payload;
     }
-    bool hasAgent(const Detach& cmd) {
+    bool hasAgent(const DeployAgent::Event& cmd) {
         return has_payload;
     }
 
     // Transition actions
-    void takeoff(const Takeoff& cmd);
-    void reachShip(const Travel& cmd);
-    void hover(const Hold& cmd);
-    void deployAgent(const Detach& cmd);
-    void returnHome(const Return& cmd);
-    void land(const Terminate& cmd);
+    void takeoff(const Takeoff::Event& cmd);
+    void reachShip(const ReachShip::Event& cmd);
+    void hover(const Hovering::Event& cmd);
+    void deployAgent(const DeployAgent::Event& cmd);
+    void returnHome(const ReturnHome::Event& cmd);
+    void land(const Termination::Event& cmd);
 
     // clang-format off
     struct transition_table
         : boost::mpl::vector<
               //      Type     Start          Event          Next            Action                         Guard
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                     a_row<    Rest     ,  Takeoff      ,  Hover    ,  &StateMachineBase::takeoff                                              >,
+                     a_row<    Rest     ,  Takeoff::Event      ,  Hover    ,  &StateMachineBase::takeoff                                              >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                     a_row<    Hover    ,  Travel       ,  Mission  ,  &StateMachineBase::reachShip                                            >,
+                     a_row<    Hover    ,  ReachShip::Event       ,  Mission  ,  &StateMachineBase::reachShip                                            >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                     a_row<    Mission  ,  Hold         ,  Hover    ,  &StateMachineBase::hover                                                >,
+                     a_row<    Mission  ,  Hovering::Event         ,  Hover    ,  &StateMachineBase::hover                                                >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                       row<    Hover    ,  Detach       ,  Deploy   ,  &StateMachineBase::deployAgent  ,  &StateMachineBase::hasAgent          >,
+                       row<    Hover    ,  DeployAgent::Event       ,  Deploy   ,  &StateMachineBase::deployAgent  ,  &StateMachineBase::hasAgent          >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                     a_row<    Deploy   ,  Hold         ,  Hover    ,  &StateMachineBase::hover                                                >,
+                     a_row<    Deploy   ,  Hovering::Event         ,  Hover    ,  &StateMachineBase::hover                                                >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                       row<    Hover    ,  Return       ,  Mission  ,  &StateMachineBase::returnHome   ,  &StateMachineBase::isAgentDeployed   >,
+                       row<    Hover    ,  ReturnHome::Event       ,  Mission  ,  &StateMachineBase::returnHome   ,  &StateMachineBase::isAgentDeployed   >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                     a_row<    Hover    ,  Terminate    ,  Rest     ,  &StateMachineBase::land                                                 >
+                     a_row<    Hover    ,  Termination::Event    ,  Rest     ,  &StateMachineBase::land                                                 >
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
               > {};
     // clang-format on
 
   private:
-    void goToPosition(const double& x, const double& y, const double& z);
-    void odometryCallback(const nav_msgs::Odometry& odom);
-    void stateCallback(const mavros_msgs::State& state);
-
-    void switchMode(const std::string& des_mode);
-
-    geometry_msgs::Pose mav_pose_;
-    geometry_msgs::Pose home_pose_;  // TODO: override hardcoding/parametrization
-
-    ros::Subscriber odom_sub_;
-    ros::Subscriber mav_state_sub_;
-
-    ros::Publisher cmd_pose_pub_;
-
-    ros::ServiceClient arming_client_;
-    ros::ServiceClient mode_client_;
-    ros::ServiceClient deploy_client_;
+    void initializeBehaviours(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
 
     bool verbose_;
+    std::shared_ptr<CarrierState> state_ptr_;
 
-    double call_rate_;
-    double hover_height_;
-    double land_height_;
-    double dist_err_;
-
-    mavros_msgs::State mav_state_;
+    // behaviour objects
+    Takeoff takeoff_behaviour_;
+    ReachShip travel_behaviour_;
+    ReturnHome return_behaviour_;
+    Termination land_behaviour_;
+    Hovering hover_behaviour_;
+    DeployAgent deploy_behaviour_;
 };
 
 }  // namespace ariitk::carrier_state_machine

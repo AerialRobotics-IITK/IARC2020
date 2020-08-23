@@ -10,16 +10,23 @@ namespace ariitk::carrier_state_machine {
 class CarrierStateMachine : public StateMachineBase {
   public:
     CarrierStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
-    void spin();
+    void run();
 
   private:
-    void publishCurrState();
+    void publishCurrState(const ros::TimerEvent&);
+
     template<class Event>
     void performTask();
+
+    template<class Behaviour>
+    inline void executeBehaviour() {
+        machine_.process_event(typename Behaviour::Event());
+    }
 
     StateMachineBackend machine_;
 
     ros::Publisher state_pub_;
+    ros::Timer state_timer_;
 
     double poll_rate_;
     bool verbose_;

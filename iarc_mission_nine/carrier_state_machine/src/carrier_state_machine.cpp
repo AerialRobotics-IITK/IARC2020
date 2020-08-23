@@ -10,22 +10,21 @@ CarrierStateMachine::CarrierStateMachine(ros::NodeHandle& nh, ros::NodeHandle& n
     machine_.init(nh, nh_private);
 
     state_pub_ = nh_private.advertise<std_msgs::String>("curr_state", 1);
+    state_timer_ = nh_private.createTimer(ros::Duration(poll_rate_), &CarrierStateMachine::publishCurrState, this);
 
     // Fly!
-    machine_.process_event(Takeoff());
+    executeBehaviour<Takeoff>();
 }
 
-void CarrierStateMachine::spin() {
-    auto state_publish_thread = std::async(std::launch::async, [this] { publishCurrState(); });
-
+void CarrierStateMachine::run() {
     // First, get to the ship
-    performTask<Travel>();  // exits when planned trajectory is complete
+    performTask<ReachShip>();  // exits when planned trajectory is complete
     // Second, deploy the agent to do its work
-    performTask<Detach>();  // exits once agent has detached
+    performTask<DeployAgent>();  // exits once agent has detached
     // Now, return to takeoff zone
-    performTask<Return>();  // exits once carrier is in takeoff zone
+    performTask<ReturnHome>();  // exits once carrier is in takeoff zone
     // Die!
-    machine_.process_event(Terminate());
+    executeBehaviour<Termination>();
 
     machine_.stop();
 }
@@ -33,11 +32,11 @@ void CarrierStateMachine::spin() {
 template<class Event>
 void CarrierStateMachine::performTask() {
     // since every task must come back to hover, these two calls are always together
-    machine_.process_event(Event());
-    machine_.process_event(Hold(curr_height));  // hover at the current height by default
+    executeBehaviour<Event>();
+    executeBehaviour<Hovering>();  // hover at the current height by default
 }
 
-void CarrierStateMachine::publishCurrState() {
+void CarrierStateMachine::publishCurrState(const ros::TimerEvent&) {
     ros::Rate loop_rate(poll_rate_);
 
     std_msgs::String state_msg;

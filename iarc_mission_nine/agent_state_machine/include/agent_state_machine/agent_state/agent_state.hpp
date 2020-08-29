@@ -21,20 +21,29 @@ class AgentState {
     };
 
     bool switchMode(const std::string& des_mode);
+    void publishPoseSetpoint(const geometry_msgs::Pose& des_pose);
+    void goToLocation(const geometry_msgs::Pose& des_pose);
 
   private:
     void odometryCallback(const nav_msgs::Odometry& odom);
     void stateCallback(const mavros_msgs::State& state);
+
+    inline double pointDistance(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) {
+        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2));
+    }
 
     ros::Subscriber odom_sub_;
     ros::Subscriber state_sub_;
 
     ros::ServiceClient mode_client_;
 
+    ros::Publisher cmd_pose_pub_;
+
     geometry_msgs::Pose pose_;
     mavros_msgs::State state_;
 
     double call_rate_;
+    double distance_error_;
 };
 
 }  // namespace ariitk::agent_state_machine

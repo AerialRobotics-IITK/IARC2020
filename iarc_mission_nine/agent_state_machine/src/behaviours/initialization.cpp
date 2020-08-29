@@ -10,10 +10,11 @@ void Initialization::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private, cons
     mav_state_ = state_ptr;
 
     arming_client_ = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
-    takeoff_client_ = nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/takeoff");
+    // takeoff_client_ = nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/takeoff");
 }
 
 void Initialization::execute(const Event& evt) {
+    BHV_INFO("Initializing...");
     // waitForDeploy();
     if (!arm()) {
         return;
@@ -26,11 +27,13 @@ void Initialization::execute(const Event& evt) {
     // wait for takeoff to complete
     ros::Rate loop_rate(call_rate_);
     while (ros::ok() && (mav_state_->getPose().position.z < hover_height_ - distance_error_)) {
+        ROS_INFO_STREAM("WAIT");
         ros::spinOnce();
         loop_rate.sleep();
     }
 }
 
+// TODO: send arming toggle into mav state
 bool Initialization::arm() {
     BHV_INFO("Arming... ");
 
@@ -56,29 +59,31 @@ bool Initialization::arm() {
 }
 
 bool Initialization::takeoff() {
-    BHV_INFO("Switching to AUTO.TAKEOFF... ");
+    BHV_INFO("Switching to OFFBOARD for takeoff... ");
 
-    mavros_msgs::CommandTOL takeoff_msg;
-    takeoff_msg.request.altitude = hover_height_;
-    takeoff_msg.response.success = false;
+    // ros::Rate loop_rate(call_rate_);
+    // uint attempts = 0, max_attempts = 69;
 
-    ros::Rate loop_rate(call_rate_);
-    uint attempts = 0, max_attempts = 69;
+    // // TODO: Try offboard instead of takeoff service
+    // while (ros::ok() && takeoff_msg.response.success != true && mav_state_->getState().mode != "AUTO.TAKEOFF") {
+    //     takeoff_client_.call(takeoff_msg);
+    //     ros::spinOnce();
 
-    // TODO: Try offboard instead of takeoff service
-    while (ros::ok() && takeoff_msg.response.success != true && mav_state_->getState().mode != "AUTO.TAKEOFF") {
-        takeoff_client_.call(takeoff_msg);
-        ros::spinOnce();
+    //     if (attempts++ > max_attempts) {
+    //         ROS_FATAL("Takeoff unsuccessful!");
+    //         return false;
+    //     }
 
-        if (attempts++ > max_attempts) {
-            ROS_FATAL("Takeoff unsuccessful!");
-            return false;
-        }
+    //     loop_rate.sleep();
+    // }
+    geometry_msgs::Pose takeoff_pose = mav_state_->getPose();
+    takeoff_pose.position.z = hover_height_;
 
-        loop_rate.sleep();
-    }
+    mav_state_->goToLocation(takeoff_pose);
+    // mav_state_->switchMode("AUTO.LOITER");
 
-    return true;
+    bool status = (fabs((mav_state_)->getPose().position.z - hover_height_) < distance_error_);
+    return status;
 }
 
 }  // namespace ariitk::agent_state_machine

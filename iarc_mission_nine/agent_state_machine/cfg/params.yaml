@@ -1,5 +1,5 @@
-poll_rate: 5       # Rate for all state transition loops, in Hz
-call_rate: 10       # Rate for all persistent service calls, in Hz
+poll_rate: 10       # Rate for all state transition loops, in Hz
+call_rate: 30       # Rate for all persistent service calls, in Hz
 
 verbose:            # Verbosity flags for terminal output
   state: true       # If true, state entry and exit messages are published

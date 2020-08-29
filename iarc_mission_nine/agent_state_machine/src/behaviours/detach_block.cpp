@@ -6,6 +6,7 @@ void DetachBlock::init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std
 }
 
 void DetachBlock::execute(const Event& evt) {
+    BHV_INFO("Detaching module...");
 }
 
 }  // namespace ariitk::agent_state_machine

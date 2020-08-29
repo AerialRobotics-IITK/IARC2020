@@ -1,7 +1,9 @@
 #pragma once
 
+#include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/CommandTOL.h>
+#include <mavros_msgs/SetMode.h>
 
 #include <agent_state_machine/agent_state/agent_state.hpp>
 #include <state_machine_definition/state_transition_behaviour.hpp>

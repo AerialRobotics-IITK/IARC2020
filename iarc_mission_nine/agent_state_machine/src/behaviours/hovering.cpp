@@ -7,7 +7,7 @@ void Hovering::init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std::s
 }
 
 void Hovering::execute(const Event& evt) {
-    bool result = mav_state_->switchMode("AUTO.HOLD");
+    bool result = mav_state_->switchMode("AUTO.LOITER");
 }
 
 }  // namespace ariitk::agent_state_machine

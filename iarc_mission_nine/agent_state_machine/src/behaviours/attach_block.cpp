@@ -6,6 +6,7 @@ void AttachBlock::init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std
 }
 
 void AttachBlock::execute(const Event& evt) {
+    BHV_INFO("Placing payload...");
 }
 
 }  // namespace ariitk::agent_state_machine

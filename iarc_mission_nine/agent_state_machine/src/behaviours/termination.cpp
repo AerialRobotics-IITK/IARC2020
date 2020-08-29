@@ -7,6 +7,7 @@ void Termination::init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std
 }
 
 void Termination::execute(const Event& evt) {
+    BHV_INFO("Switching to Land...");
     bool result = mav_state_->switchMode("AUTO.LAND");
 }
 

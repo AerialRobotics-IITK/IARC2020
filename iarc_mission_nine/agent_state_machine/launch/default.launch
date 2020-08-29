@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="agent_name" default="iris"/>
+    <arg name="agent_name" default="firefly"/>
     <arg name="agent_type" default="iris"/>
 
     <group ns="$(arg agent_name)">
         <node pkg="agent_state_machine" type="agent_state_machine_node" name="agent_state_machine" output="screen">
             <rosparam file="$(find agent_state_machine)/cfg/params.yaml" command="load"/>
-            <remap from="odometry" to="mavros/local_position/odom"/>
+            <remap from="odometry" to="mavros/global_position/local"/>
             <remap from="command/pose" to="mavros/setpoint_position/local"/>
         </node>
     </group>

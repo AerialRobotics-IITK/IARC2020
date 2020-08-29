@@ -14,6 +14,7 @@ AgentStateMachine::AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_pr
 
     // Fly!
     executeBehaviour<Initialization>();
+    ros::Duration(10.0).sleep();
 }
 
 void AgentStateMachine::run() {

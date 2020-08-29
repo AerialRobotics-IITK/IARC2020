@@ -1,16 +1,20 @@
 <package format="2">
     <name>iarc_mission_nine</name>
     <version>1.0.0</version>
-    <description>State Machines and Behaviours for IARC Mission 9</description>
+    <description>Integrated package for IARC Mission 9</description>
     <maintainer email="aerialroboticsiitk@gmail.com">Aerial Robotics IITK</maintainer>
 
     <license>TODO</license>
 
     <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin_simple</buildtool_depend>
 
     <!-- Add packages as run dependencies below -->
     <depend>agent_state_machine</depend>
     <depend>carrier_state_machine</depend>
+
+    <!-- Add packages as run dependencies below -->
+
     <depend>iarc_simulation_tools</depend>
 
 </package>

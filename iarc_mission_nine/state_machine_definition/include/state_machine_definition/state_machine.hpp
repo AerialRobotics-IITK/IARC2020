@@ -14,11 +14,19 @@
 
 namespace ariitk::state_machine {
 
+// store available policies for easier use
+struct SwitchPolicy {
+    typedef boost::msm::active_state_switch_after_entry after_entry;
+    typedef boost::msm::active_state_switch_after_exit after_exit;
+    typedef boost::msm::active_state_switch_before_transition before_transition;
+    typedef boost::msm::active_state_switch_after_transition_action after_transition;
+};
+
 template<class FSMClass>
 class FSMDef : public boost::msm::front::state_machine_def<FSMClass> {
   public:
     typedef boost::msm::back::state_machine<FSMClass> StateMachineBackend;
-    typedef boost::msm::active_state_switch_after_transition_action active_state_switch_policy;
+    typedef SwitchPolicy::after_transition active_state_switch_policy;
 
     template<class Event, class FSM>
     void on_entry(Event const&, FSM&){};

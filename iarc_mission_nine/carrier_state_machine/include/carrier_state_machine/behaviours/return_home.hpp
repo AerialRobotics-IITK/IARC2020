@@ -5,11 +5,11 @@
 
 namespace ariitk::carrier_state_machine {
 
-class ReturnHome : public ariitk::state_machine::Behaviour {
+class ReturnHome {
   public:
     typedef ariitk::state_machine::Behaviour::Event Event;
 
-    void execute(const Event& evt) override;
+    void execute(const Event& evt);
     void init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std::shared_ptr<CarrierState> state_ptr);
 
   private:

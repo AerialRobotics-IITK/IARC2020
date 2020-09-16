@@ -5,11 +5,11 @@
 
 namespace ariitk::agent_state_machine {
 
-class DetachBlock : public ariitk::state_machine::Behaviour {
+class DetachBlock {
   public:
-    typedef ariitk::state_machine::Behaviour::Event Event;
+    struct Event {};
 
-    void execute(const Event& evt) override;
+    void execute(const Event& evt);
     void init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std::shared_ptr<AgentState> state_ptr);
 
   private:

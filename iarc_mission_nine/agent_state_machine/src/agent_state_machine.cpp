@@ -10,14 +10,14 @@ AgentStateMachine::AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_pr
     machine_.init(nh, nh_private);
 
     state_pub_ = nh_private.advertise<std_msgs::String>("curr_state", 1);
-    state_timer_ = nh_private.createTimer(ros::Duration(poll_rate_), &AgentStateMachine::publishCurrState, this);
+    state_timer_ = nh_private.createTimer(ros::Rate(poll_rate_).cycleTime(), &AgentStateMachine::publishCurrState, this);
 
     // Fly!
-    executeBehaviour<Initialization>();
-    ros::Duration(10.0).sleep();
+    ROS_INFO_STREAM("Initialized Machine!");
 }
 
 void AgentStateMachine::run() {
+    executeBehaviour<Initialization>();
     // First, look for the mast
     performTask<MastSearch>();  // exits when mast is found
     // Second, remove the existing block
@@ -38,15 +38,9 @@ void AgentStateMachine::performTask() {
 }
 
 void AgentStateMachine::publishCurrState(const ros::TimerEvent&) {
-    ros::Rate loop_rate(poll_rate_);
-
     std_msgs::String state_msg;
-    while (ros::ok()) {
-        ros::spinOnce();
-        state_msg.data = state_names[machine_.current_state()[0]];
-        state_pub_.publish(state_msg);
-        loop_rate.sleep();
-    }
+    state_msg.data = state_names[machine_.current_state()[0]];
+    state_pub_.publish(state_msg);
 }
 
 }  // namespace ariitk::agent_state_machine

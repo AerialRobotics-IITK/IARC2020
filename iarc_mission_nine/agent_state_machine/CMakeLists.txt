@@ -1,18 +1,44 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(agent_state_machine)
 
-find_package(catkin_simple REQUIRED)
-catkin_simple(ALL_DEPS_REQUIRED)
+set ( DEPENDENCIES 
+    nav_msgs
+    geometry_msgs
+    mavros_msgs
+    state_machine_definition
+    mast_finder
+    plate_detector
+    led_detector
+    feature_detection
+    detector_msgs
+    pose_estimator
+)
 
-add_definitions(-std=c++17)
+find_package(catkin REQUIRED COMPONENTS
+    roscpp
+    ${DEPENDENCIES}
+)
+
+add_definitions(-std=c++17 -g)
 set(CMAKE_BUILD_TYPE Release)
 
-cs_add_library(agent_state
+catkin_package(
+    INCLUDE_DIRS include
+    LIBRARIES agent_state agent_behaviours agent_state_machine_lib
+    CATKIN_DEPENDS ${DEPENDENCIES}
+)
+
+include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
+)
+
+add_library(agent_state
     src/agent_state/agent_state.cpp
 )
 target_link_libraries(agent_state ${catkin_LIBRARIES})
 
-cs_add_library(agent_behaviours
+add_library(agent_behaviours
     src/behaviours/initialization.cpp
     src/behaviours/hovering.cpp
     src/behaviours/termination.cpp
@@ -22,14 +48,27 @@ cs_add_library(agent_behaviours
 )
 target_link_libraries(agent_behaviours agent_state)
 
-cs_add_library(agent_state_machine_lib
+add_library(agent_state_machine_lib
     src/agent_state_machine_base.cpp
     src/agent_state_machine.cpp
 )
 target_link_libraries(agent_state_machine_lib agent_behaviours)
 
-cs_add_executable(agent_state_machine_node src/agent_state_machine_node.cpp)
+add_executable(agent_state_machine_node src/agent_state_machine_node.cpp)
 target_link_libraries(agent_state_machine_node agent_state_machine_lib)
 
-cs_install()
-cs_export()
+install(TARGETS agent_state agent_state_machine_lib agent_behaviours
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+
+install(TARGETS agent_state_machine_node
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(
+  DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.hpp"
+)

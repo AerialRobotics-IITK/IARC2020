@@ -1,4 +1,4 @@
-poll_rate: 10       # Rate for all state transition loops, in Hz
+poll_rate: 50       # Rate for all state transition loops, in Hz
 call_rate: 30       # Rate for all persistent service calls, in Hz
 
 verbose:            # Verbosity flags for terminal output
@@ -7,7 +7,7 @@ verbose:            # Verbosity flags for terminal output
 
 hover_height: 5.0   # Default hovering height, in *metres*
 land_height: 2.0    # Height at which the quad lands, in *metres*
-distance_error: 0.05      # Min. sq. dist. error to consider a setpoint as achieved, in *metres^2*
+distance_error: 0.1      # Min. sq. dist. error to consider a setpoint as achieved, in *metres^2*
 
 agent:
   x: -5

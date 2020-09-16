@@ -8,58 +8,27 @@ void Initialization::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private, cons
     nh_private.getParam("distance_error", distance_error_);
 
     mav_state_ = state_ptr;
-
-    arming_client_ = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
-    // takeoff_client_ = nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/takeoff");
 }
 
 void Initialization::execute(const Event& evt) {
     BHV_INFO("Initializing...");
     // waitForDeploy();
-    if (!arm()) {
-        return;
-    }
     // detach();
     if (!takeoff()) {
         return;
     }
 
-    // wait for takeoff to complete
-    ros::Rate loop_rate(call_rate_);
-    while (ros::ok() && (mav_state_->getPose().position.z < hover_height_ - distance_error_)) {
-        ROS_INFO_STREAM("WAIT");
-        ros::spinOnce();
-        loop_rate.sleep();
-    }
-}
-
-// TODO: send arming toggle into mav state
-bool Initialization::arm() {
-    BHV_INFO("Arming... ");
-
-    mavros_msgs::CommandBool arm_msg;
-    arm_msg.request.value = true;
-    arm_msg.response.success = false;
-
-    ros::Rate loop_rate(call_rate_);
-    uint attempts = 0, max_attempts = 69;
-
-    while (ros::ok() && arm_msg.response.success != true && mav_state_->getState().armed != true) {
-        arming_client_.call(arm_msg);
-        ros::spinOnce();
-
-        if (attempts++ > max_attempts) {
-            ROS_FATAL("Arming unsuccessful!");
-            return false;
-        }
-
-        loop_rate.sleep();
-    }
-    return true;
+    // // wait for takeoff to complete
+    // ros::Rate loop_rate(call_rate_);
+    // while (ros::ok() && (mav_state_->getPose().position.z < hover_height_ - distance_error_)) {
+    //     ROS_INFO_STREAM("WAIT");
+    //     ros::spinOnce();
+    //     loop_rate.sleep();
+    // }
 }
 
 bool Initialization::takeoff() {
-    BHV_INFO("Switching to OFFBOARD for takeoff... ");
+    BHV_INFO("Taking off... ");
 
     // ros::Rate loop_rate(call_rate_);
     // uint attempts = 0, max_attempts = 69;

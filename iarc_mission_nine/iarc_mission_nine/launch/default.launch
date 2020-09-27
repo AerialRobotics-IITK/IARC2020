@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="agent_name" default="firefly"/>
+    <arg name="agent_type" default="firefly"/>
+
+    <arg name="carrier_name" default="neo11"/>
+    <arg name="carrier_type" default="neo11"/>
+
+    <arg name="world_name" default="integrated"/>
+
+    <include file="$(find iarc_mission_nine)/launch/env.launch">
+        <arg name="agent_name" value="$(arg agent_name)"/>
+        <arg name="agent_type" value="$(arg agent_type)"/>
+        <arg name="carrier_name" value="$(arg carrier_name)"/>
+        <arg name="carrier_type" value="$(arg carrier_type)"/>
+        <arg name="world_name" value="$(arg world_name)"/>
+    </include>
+
+    <include file="$(find agent_state_machine)/launch/default.launch">
+        <arg name="agent_name" value="$(arg agent_name)"/>
+        <arg name="agent_type" value="$(arg agent_type)"/>
+    </include>
+    
+</launch>

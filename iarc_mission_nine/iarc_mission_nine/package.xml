@@ -10,7 +10,7 @@
     <buildtool_depend>catkin_simple</buildtool_depend>
 
     <!-- Add packages as run dependencies below -->
-
+    <depend>agent_state_machine</depend>
     <depend>iarc_simulation_tools</depend>
 
 </package>

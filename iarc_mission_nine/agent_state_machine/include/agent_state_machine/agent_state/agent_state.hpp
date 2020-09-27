@@ -6,7 +6,10 @@
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 
+#define BHV_INFO(X) ROS_INFO_STREAM("[BHV]: " << X)
+
 namespace ariitk::agent_state_machine {
+
 class AgentState {
   public:
     void init(ros::NodeHandle& nh, ros::NodeHandle& nh_private);

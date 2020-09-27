@@ -6,13 +6,12 @@
 #include <mavros_msgs/SetMode.h>
 
 #include <agent_state_machine/agent_state/agent_state.hpp>
-#include <state_machine_definition/state_transition_behaviour.hpp>
 
 namespace ariitk::agent_state_machine {
 
 class Initialization {
   public:
-    typedef ariitk::state_machine::Behaviour::Event Event;
+    struct Event {};
 
     void execute(const Event& evt);
     void init(ros::NodeHandle& nh, ros::NodeHandle& nh_private, const std::shared_ptr<AgentState> state_ptr);

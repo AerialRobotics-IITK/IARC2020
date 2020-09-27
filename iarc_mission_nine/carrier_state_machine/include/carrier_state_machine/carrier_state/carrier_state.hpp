@@ -6,6 +6,8 @@
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 
+#define BHV_INFO(X) ROS_INFO_STREAM("[BHV]: " << X)
+
 namespace ariitk::carrier_state_machine {
 
 class CarrierState {

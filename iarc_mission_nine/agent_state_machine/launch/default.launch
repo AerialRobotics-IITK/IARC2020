@@ -7,6 +7,10 @@
         <node pkg="agent_state_machine" type="agent_state_machine_node" name="agent_state_machine" output="screen">
             <rosparam file="$(find agent_state_machine)/cfg/params.yaml" command="load"/>
             <remap from="odometry" to="odometry_sensor1/odometry"/>
+            <remap from="odom"           to="odometry_sensor1/odometry" />
+            <remap from="pose"           to="command/pose" />
+            <remap from="front_coord"    to="plate_pose_estimator_node/front_coord" />
+            <remap from="centre_coord"   to="plate_detector_node/centre_coord" />
         </node>
     </group>
 </launch>

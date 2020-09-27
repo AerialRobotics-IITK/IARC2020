@@ -9,11 +9,11 @@ void Hovering::init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std::s
 void Hovering::execute(const Event& evt) {
     // Do nothing: Controller automatically hovers
     BHV_INFO("Hovering at Location!");
-    // ros::Rate loop_rate(30.0);
-    // while (ros::ok()) {
-    //     ros::spinOnce();
-    //     loop_rate.sleep();
-    // }
+    ros::Rate loop_rate(30.0);
+    while (ros::ok()) {
+        ros::spinOnce();
+        loop_rate.sleep();
+    }
 }
 
 }  // namespace ariitk::agent_state_machine

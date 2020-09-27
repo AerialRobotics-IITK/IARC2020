@@ -1,7 +1,6 @@
 #pragma once
 
 #include <agent_state_machine/agent_state/agent_state.hpp>
-#include <state_machine_definition/state_transition_behaviour.hpp>
 
 namespace ariitk::agent_state_machine {
 

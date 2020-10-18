@@ -1,14 +1,16 @@
 #pragma once
 
 #include <geometry_msgs/PoseStamped.h>
-#include <mavros_msgs/SetMode.h>
-#include <mavros_msgs/State.h>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 
 #define BHV_INFO(X) ROS_INFO_STREAM("[BHV]: " << X)
 
 namespace ariitk::agent_state_machine {
+
+static inline double pointDistance(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) {
+    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2));
+}
 
 class AgentState {
   public:
@@ -23,10 +25,6 @@ class AgentState {
 
   private:
     void odometryCallback(const nav_msgs::Odometry& odom);
-
-    inline double pointDistance(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) {
-        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2));
-    }
 
     ros::Subscriber odom_sub_;
 

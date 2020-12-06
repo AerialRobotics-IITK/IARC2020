@@ -3,13 +3,13 @@
 #include <future>
 #include <std_msgs/String.h>
 
-#include <agent_state_machine/agent_state_machine_base.hpp>
+#include <carrier_state_machine/carrier_state_machine_base.hpp>
 
-namespace ariitk::agent_state_machine {
+namespace ariitk::carrier_state_machine {
 
-class AgentStateMachine : public StateMachineBase {
+class CarrierStateMachine : public StateMachineBase {
   public:
-    AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
+    CarrierStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
     void run();
 
   private:
@@ -32,4 +32,4 @@ class AgentStateMachine : public StateMachineBase {
     bool verbose_;
 };
 
-}  // namespace ariitk::agent_state_machine
+}  // namespace ariitk::carrier_state_machine

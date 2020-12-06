@@ -20,5 +20,10 @@
         <arg name="agent_name" value="$(arg agent_name)"/>
         <arg name="agent_type" value="$(arg agent_type)"/>
     </include>
-    
+
+    <include file="$(find carrier_state_machine)/launch/default.launch">
+        <arg name="carrier_name" value="$(arg carrier_name)"/>
+        <arg name="carrier_type" value="$(arg carrier_type)"/>
+    </include>
+
 </launch>

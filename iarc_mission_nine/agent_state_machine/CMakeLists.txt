@@ -10,16 +10,16 @@ set(CMAKE_BUILD_TYPE Release)
 cs_add_library(agent_state src/agent_state/agent_state.cpp)
 target_link_libraries(agent_state ${catkin_LIBRARIES})
 
-cs_add_library(agent_state_machine_lib 
+cs_add_library(${PROJECT_NAME}_lib 
     src/agent_state_machine.cpp
     src/agent_state_machine_base.cpp
 )
-target_link_libraries(agent_state_machine_lib agent_state)
+target_link_libraries(${PROJECT_NAME}_lib agent_state)
 
-cs_add_executable(agent_state_machine_node 
+cs_add_executable(${PROJECT_NAME}_node 
     src/agent_state_machine_node.cpp
 )
-target_link_libraries(agent_state_machine_node agent_state_machine_lib)
+target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}_lib)
 
 cs_install()
 cs_export()

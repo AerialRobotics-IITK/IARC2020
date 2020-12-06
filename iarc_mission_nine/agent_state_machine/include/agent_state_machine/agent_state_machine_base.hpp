@@ -3,15 +3,15 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
 
+#include <state_machine_definition/state_machine.hpp>
+
+#include <agent_state_machine/agent_state/agent_state.hpp>
 #include <agent_state_machine/behaviours/attach_block.hpp>
 #include <agent_state_machine/behaviours/detach_block.hpp>
 #include <agent_state_machine/behaviours/hovering.hpp>
 #include <agent_state_machine/behaviours/initialization.hpp>
 #include <agent_state_machine/behaviours/mast_search.hpp>
 #include <agent_state_machine/behaviours/termination.hpp>
-
-#include <agent_state_machine/agent_state/agent_state.hpp>
-#include <state_machine_definition/state_machine.hpp>
 
 namespace ariitk::agent_state_machine {
 
@@ -21,7 +21,7 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     void spin();
 
     // State names
-    std::vector<std::string> state_names = {"Rest", "Hover", "Explore", "Detach", "Attach"};
+    std::vector<std::string> state_names_ = {"Rest", "Hover", "Explore", "Detach", "Attach"};
 
     // State definitions
     struct Rest : public State<Rest> {};
@@ -30,37 +30,37 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     struct Attach : public State<Attach> {};
     struct Explore : public State<Explore> {};
 
-    typedef Rest initial_state;
+    typedef Rest initial_state_;
 
     // Guard variables
-    bool has_payload;
-    bool mast_detected;
+    bool has_payload_;
+    bool mast_detected_;
 
     // Transition Guards
     template<class Event>
-    bool isMastVisible(const Event& cmd) {
-        return mast_detected;
+    bool isMastVisible(const Event cmd) {
+        return mast_detected_;
     }
-    bool needMastSearch(const MastSearch::Event& cmd) {
-        return !mast_detected;
+    bool needMastSearch(const MastSearch::Event cmd) {
+        return !mast_detected_;
     }
-    bool hasNoPayload(const Hovering::Event& cmd) {
-        return !has_payload;
+    bool hasNoPayload(const Hovering::Event cmd) {
+        return !has_payload_;
     }
-    bool canAttachBlock(const AttachBlock::Event& cmd) {
-        return (has_payload && mast_detected);
+    bool canAttachBlock(const AttachBlock::Event cmd) {
+        return (has_payload_ && mast_detected_);
     }
 
     // Transition actions --- behaviour wrappers
     // MSM Transition table expects actions to be of the same class
     // So we wrap the behaviour executors in these member functions
 
-    void initialize(const Initialization::Event& cmd);
-    void findMast(const MastSearch::Event& cmd);
-    void hover(const Hovering::Event& cmd);
-    void detachBlock(const DetachBlock::Event& cmd);
-    void attachBlock(const AttachBlock::Event& cmd);
-    void land(const Termination::Event& cmd);
+    void initialize(const Initialization::Eventcmd);
+    void findMast(const MastSearch::Event cmd);
+    void hover(const Hovering::Event cmd);
+    void detachBlock(const DetachBlock::Event cmd);
+    void attachBlock(const AttachBlock::Event cmd);
+    void land(const Termination::Event cmd);
 
     // clang-format off
     struct transition_table

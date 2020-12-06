@@ -14,9 +14,9 @@ static inline double pointDistance(const geometry_msgs::Point& p1, const geometr
 
 class AgentState {
   public:
-    void init(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
+    AgentState(ros::NodeHandle& nh, ros::NodeHandle& nh_private);
 
-    inline geometry_msgs::Pose getPose() {
+    inline const geometry_msgs::Pose getPose() {
         return pose_;
     };
 

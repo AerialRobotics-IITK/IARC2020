@@ -3,8 +3,8 @@
 namespace ariitk::agent_state_machine {
 
 AgentStateMachine::AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
-    nh_private.getParam("poll_rate", poll_rate_);
-    nh_private.getParam("verbose/state", verbose_);
+    nh_private.param("poll_rate", poll_rate_, 50.0);
+    nh_private.param("verbose/state", verbose_, false);
 
     machine_.start();
     machine_.init(nh, nh_private);

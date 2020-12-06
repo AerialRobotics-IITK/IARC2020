@@ -1,20 +1,19 @@
 #include <agent_state_machine/agent_state/agent_state.hpp>
 
 namespace ariitk::agent_state_machine {
-void AgentState::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
-    nh_private.getParam("call_rate", call_rate_);
-    nh_private.getParam("distance_error", distance_error_);
+AgentState::AgentState(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
+    nh_private.param("call_rate", call_rate_, 30.0);
+    nh_private.param("distance_error", distance_error_, 0.1);
 
     odom_sub_ = nh.subscribe("odometry", 1, &AgentState::odometryCallback, this);
     cmd_pose_pub_ = nh.advertise<geometry_msgs::PoseStamped>("command/pose", 1);
 
-    pose_.position.z = DBL_MIN;
-    ros::Rate loop_rate(20);
-
     // wait for first message
-    while (pose_.position.z == DBL_MIN) {
-        ros::spinOnce();
-        loop_rate.sleep();
+    nav_msgs::OdometryConstPtr odom = ros::topic::waitForMessage<nav_msgs::Odometry>("odometry", ros::Duration(1));
+    if (odom == NULL) {
+        ROS_ERROR("No odometry received!");
+    } else {
+        pose_ = odom->pose.pose;
     }
 }
 

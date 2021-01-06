@@ -13,3 +13,15 @@
 [submodule "iarc_controls"]
 	path = iarc_controls
 	url = git@github.com:AerialRobotics-IITK/iarc_controls
+[submodule "rosflight"]
+	path = rosflight
+	url = git@github.com:rosflight/rosflight.git
+	branch = master
+[submodule "rosflight_plugins"]
+	path = rosflight_plugins
+	url = git@github.com:byu-magicc/rosflight_plugins.git
+	branch = master
+[submodule "rosplane"]
+	path = rosplane
+	url = git@github.com:AerialRobotics-IITK/rosplane.git
+	branch = feature/rosplane_dubins

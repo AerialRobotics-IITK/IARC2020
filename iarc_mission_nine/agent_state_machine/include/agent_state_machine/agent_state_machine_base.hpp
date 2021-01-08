@@ -30,7 +30,7 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     struct Attach : public State<Attach> {};
     struct Explore : public State<Explore> {};
 
-    typedef Rest initial_state_;
+    typedef Rest initial_state;
 
     // Guard variables
     bool has_payload_;
@@ -38,16 +38,16 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
 
     // Transition Guards
     template<class Event>
-    bool isMastVisible(const Event cmd) {
+    bool isMastVisible(const Event& cmd) {
         return mast_detected_;
     }
-    bool needMastSearch(const MastSearch::Event cmd) {
+    bool needMastSearch(const MastSearch::Event& cmd) {
         return !mast_detected_;
     }
-    bool hasNoPayload(const Hovering::Event cmd) {
+    bool hasNoPayload(const Hovering::Event& cmd) {
         return !has_payload_;
     }
-    bool canAttachBlock(const AttachBlock::Event cmd) {
+    bool canAttachBlock(const AttachBlock::Event& cmd) {
         return (has_payload_ && mast_detected_);
     }
 
@@ -55,12 +55,12 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     // MSM Transition table expects actions to be of the same class
     // So we wrap the behaviour executors in these member functions
 
-    void initialize(const Initialization::Eventcmd);
-    void findMast(const MastSearch::Event cmd);
-    void hover(const Hovering::Event cmd);
-    void detachBlock(const DetachBlock::Event cmd);
-    void attachBlock(const AttachBlock::Event cmd);
-    void land(const Termination::Event cmd);
+    void initialize(const Initialization::Event& cmd);
+    void findMast(const MastSearch::Event& cmd);
+    void hover(const Hovering::Event& cmd);
+    void detachBlock(const DetachBlock::Event& cmd);
+    void attachBlock(const AttachBlock::Event& cmd);
+    void land(const Termination::Event& cmd);
 
     // clang-format off
     struct transition_table

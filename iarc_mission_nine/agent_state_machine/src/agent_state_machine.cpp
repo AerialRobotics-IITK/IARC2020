@@ -39,7 +39,7 @@ void AgentStateMachine::performTask() {
 
 void AgentStateMachine::publishCurrState(const ros::TimerEvent&) {
     std_msgs::String state_msg;
-    state_msg.data = state_names[machine_.current_state()[0]];
+    state_msg.data = state_names_[machine_.current_state()[0]];
     state_pub_.publish(state_msg);
 }
 

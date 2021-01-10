@@ -21,11 +21,11 @@ void AgentStateMachine::run() {
     // First, look for the mast
     performTask<MastSearch>();  // exits when mast is found
     // Second, remove the existing block
-    performTask<DetachBlock>();  // exits once block is removed
+    // performTask<DetachBlock>();  // exits once block is removed
     // Now, attach payload in place of the block
-    performTask<AttachBlock>();  // exits once block is in place
+    // performTask<AttachBlock>();  // exits once block is in place
     // Die!
-    executeBehaviour<Termination>();
+    // executeBehaviour<Termination>();
 
     machine_.stop();
 }

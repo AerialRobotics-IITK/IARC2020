@@ -15,6 +15,9 @@
     <depend>nav_msgs</depend>
     <depend>geometry_msgs</depend>
     <depend>mavros_msgs</depend>
+    <depend>mast_finder</depend>
+    <depend>pose_estimator</depend>
+    <depend>plate_detector</depend>
 
     <depend>state_machine_definition</depend>
 

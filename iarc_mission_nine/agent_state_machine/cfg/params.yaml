@@ -5,7 +5,7 @@ verbose:            # Verbosity flags for terminal output
   state: true       # If true, state entry and exit messages are published
   transition: true  # If true, transition functions publish info messages
 
-hover_height: 5.0   # Default hovering height, in *metres*
+hover_height: 1.5   # Default hovering height, in *metres*
 land_height: 2.0    # Height at which the quad lands, in *metres*
 distance_error: 0.1 # Min. sq. dist. error to consider a setpoint as achieved, in *metres^2*
 

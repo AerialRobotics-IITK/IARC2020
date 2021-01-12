@@ -13,10 +13,14 @@ void MastSearch::execute(const Event evt) {
     ros::Rate loop_rate(30.0);
     while (ros::ok()) {
         ros::spinOnce();
-        MastSearch::plate_detector_.run();
-        ros::spinOnce();
-        MastSearch::pose_estimator_.run();
-        ros::spinOnce();
+        for (int i = 0; i < 2; i++) {
+            MastSearch::plate_detector_.run();
+            ros::spinOnce();
+            // loop_rate.sleep();
+            MastSearch::pose_estimator_.run();
+            ros::spinOnce();
+        }
+
         MastSearch::mast_finder_.run();
         loop_rate.sleep();
     }

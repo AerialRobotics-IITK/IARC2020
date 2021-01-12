@@ -24,6 +24,8 @@ bool Initialization::takeoff() {
 
     geometry_msgs::Pose takeoff_pose = mav_state_->getPose();
     takeoff_pose.position.z = hover_height_;
+    takeoff_pose.position.x = -5;
+    takeoff_pose.position.y = 1;
 
     mav_state_->goToLocation(takeoff_pose);
 

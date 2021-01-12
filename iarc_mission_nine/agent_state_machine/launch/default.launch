@@ -15,19 +15,19 @@
             <!-- <PlateDetector> -->
             <rosparam file="$(find plate_detector)/config/param.yaml" />
             <remap from="image_raw"             to="camera_rgb/image_raw" />
+            <!-- <remap from="centre_coord"          to="plate_detector_node/centre_coord" /> -->
 
             <!-- <PoseEstimator> -->
             <rosparam file="$(find pose_estimator)/config/param.yaml" />
-            <remap from="centre_coord"          to="plate_detector_node/centre_coord" />
-            <remap from="corners"               to="plate_detector_node/corners"/>
+            <!-- <remap from="corners"               to="plate_detector_node/corners"/> -->
             
             <!-- <MastFinder> -->
             <rosparam file="$(find mast_finder)/config/param.yaml" />
-            <remap from="front_coord"           to="plate_pose_estimator_node/front_coord" />
-            <remap from="estimated_coord"       to="plate_pose_estimator_node/estimated_coord" />
+            <!-- <remap from="front_coord"           to="plate_pose_estimator_node/front_coord" /> -->
+            <!-- <remap from="estimated_coord"       to="plate_pose_estimator_node/estimated_coord" /> -->
             <remap from="trajectory"            to="command/trajectory" />
-            <remap from="yaw_correction"        to="plate_pose_estimator_node/yaw_correction" />
-            <remap from="plate_front_vec"       to="plate_pose_estimator_node/plate_front_vec" />
+            <!-- <remap from="yaw_correction"        to="plate_pose_estimator_node/yaw_correction" /> -->
+            <!-- <remap from="plate_front_vec"       to="plate_pose_estimator_node/plate_front_vec" /> -->
         </node>
     </group>
 </launch>

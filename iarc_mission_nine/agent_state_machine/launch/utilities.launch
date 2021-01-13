@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="agent_name" default="firefly"/>
+    <arg name="agent_type" default="iris"/>
+
+    <group ns="$(arg agent_name)">
+        <node pkg="plate_detector" type="plate_detector_node" name="plate_detector_node"       output="screen">
+            <rosparam file="$(find plate_detector)/config/param.yaml" />
+            <remap from="image_raw"    to="camera_rgb/image_raw" />
+        </node>
+        <node pkg="pose_estimator" type="pose_estimator_node" name="plate_pose_estimator_node" output="screen">
+            <rosparam file="$(find pose_estimator)/config/param.yaml" />
+            <remap from="odom" to="odometry_sensor1/odometry" />
+            <remap from="centre_coord" to="plate_detector_node/centre_coord" />
+            <remap from="corners"       to="plate_detector_node/corners"/>
+        </node>
+    </group>
+</launch>

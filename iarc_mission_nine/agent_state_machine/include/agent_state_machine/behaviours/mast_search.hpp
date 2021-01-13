@@ -14,11 +14,10 @@ class MastSearch {
 
     void execute(const Event evt);
     void init(ros::NodeHandle& nh, ros::NodeHandle& nh_private, const std::shared_ptr<AgentState> state_ptr);
+    void loop(const ros::TimerEvent&);
 
   private:
     std::shared_ptr<AgentState> mav_state_;  // TODO: Create Destructors
-    ariitk::plate_detection::PlateDetectorNode plate_detector_;
-    ariitk::pose_estimation::PoseEstimatorNode pose_estimator_;
     ariitk::mast_locator::MastLocatorNode mast_finder_;
 };
 

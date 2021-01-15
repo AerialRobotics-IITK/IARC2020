@@ -6,6 +6,7 @@ void ReturnHome::init(ros::NodeHandle nh, ros::NodeHandle nh_private, const std:
 }
 
 void ReturnHome::execute(const Event& evt) {
+    est->backwardRun();
 }
 
 }  // namespace ariitk::carrier_state_machine

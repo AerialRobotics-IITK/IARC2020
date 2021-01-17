@@ -4,7 +4,7 @@
 
 namespace ariitk::carrier_state_machine {
 
-class Hovering {
+class HoveringBeforeDetach {
   public:
     struct Event {};
 

@@ -8,7 +8,8 @@
 #include <std_srvs/Trigger.h>
 
 #include <carrier_state_machine/behaviours/deploy_agent.hpp>
-#include <carrier_state_machine/behaviours/hovering.hpp>
+#include <carrier_state_machine/behaviours/hovering_after_detach.hpp>
+#include <carrier_state_machine/behaviours/hovering_before_detach.hpp>
 #include <carrier_state_machine/behaviours/reach_ship.hpp>
 #include <carrier_state_machine/behaviours/return_home.hpp>
 #include <carrier_state_machine/behaviours/takeoff.hpp>
@@ -50,7 +51,8 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     // Transition actions
     void takeoff(const Takeoff::Event& cmd);
     void reachShip(const ReachShip::Event& cmd);
-    void hover(const Hovering::Event& cmd);
+    void hover(const HoveringAfterDetach::Event& cmd);
+    void hover(const HoveringBeforeDetach::Event& cmd);
     void deployAgent(const DeployAgent::Event& cmd);
     void returnHome(const ReturnHome::Event& cmd);
     void land(const Termination::Event& cmd);
@@ -64,11 +66,11 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
                      a_row<    Hover    ,  ReachShip::Event       ,  Mission  ,  &StateMachineBase::reachShip                                            >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                     a_row<    Mission  ,  Hovering::Event         ,  Hover    ,  &StateMachineBase::hover                                                >,
+                     a_row<    Mission  ,  HoveringBeforeDetach::Event         ,  Hover    ,  &StateMachineBase::hover                                                >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
                        row<    Hover    ,  DeployAgent::Event       ,  Deploy   ,  &StateMachineBase::deployAgent  ,  &StateMachineBase::hasAgent          >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
-                     a_row<    Deploy   ,  Hovering::Event         ,  Hover    ,  &StateMachineBase::hover                                                >,
+                     a_row<    Deploy   ,  HoveringAfterDetach::Event         ,  Hover    ,  &StateMachineBase::hover                                                >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
                        row<    Hover    ,  ReturnHome::Event       ,  Mission  ,  &StateMachineBase::returnHome   ,  &StateMachineBase::isAgentDeployed   >,
               // +++ ------ + --------- + ------------- + --------- + -------------------------------- + ------------------------------------ +++
@@ -88,7 +90,8 @@ class StateMachineBase : public ariitk::state_machine::FSMDef<StateMachineBase> 
     ReachShip travel_behaviour_;
     ReturnHome return_behaviour_;
     Termination land_behaviour_;
-    Hovering hover_behaviour_;
+    HoveringBeforeDetach hover_before_detach_behaviour_;
+    HoveringAfterDetach hover_after_detach_behaviour_;
     DeployAgent deploy_behaviour_;
 };
 

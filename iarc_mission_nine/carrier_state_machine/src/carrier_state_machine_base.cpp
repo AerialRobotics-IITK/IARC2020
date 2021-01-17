@@ -16,7 +16,8 @@ void StateMachineBase::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
 
 void StateMachineBase::initializeBehaviours(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     takeoff_behaviour_.init(nh, nh_private, state_ptr_);
-    hover_behaviour_.init(nh, nh_private, state_ptr_);
+    hover_before_detach_behaviour_.init(nh, nh_private, state_ptr_);
+    hover_after_detach_behaviour_.init(nh, nh_private, state_ptr_);
     travel_behaviour_.init(nh, nh_private, state_ptr_);
     return_behaviour_.init(nh, nh_private, state_ptr_);
     deploy_behaviour_.init(nh, nh_private, state_ptr_);
@@ -44,10 +45,16 @@ void StateMachineBase::returnHome(const ReturnHome::Event& cmd) {
     return_behaviour_.execute(cmd);
 }
 
-void StateMachineBase::hover(const Hovering::Event& cmd) {
+void StateMachineBase::hover(const HoveringBeforeDetach::Event& cmd) {
     FSM_INFO("In Position Hold");
-    hover_behaviour_.execute(cmd);
+    hover_before_detach_behaviour_.execute(cmd);
 }
+
+void StateMachineBase::hover(const HoveringAfterDetach::Event& cmd) {
+    FSM_INFO("In Position Hold");
+    hover_after_detach_behaviour_.execute(cmd);
+}
+
 
 void StateMachineBase::land(const Termination::Event& cmd) {
     FSM_INFO("Landing!");

@@ -21,7 +21,7 @@
 	path = rosflight_plugins
 	url = git@github.com:byu-magicc/rosflight_plugins.git
 	branch = master
-[submodule "rosplane"]
-	path = rosplane
-	url = git@github.com:AerialRobotics-IITK/rosplane.git
+[submodule "iarc-rosplane"]
+	path = iarc-rosplane
+	url = git@github.com:AerialRobotics-IITK/iarc-rosplane.git
 	branch = feature/rosplane_dubins

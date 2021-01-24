@@ -8,8 +8,7 @@ void StateMachineBase::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     has_payload_ = true;
     mast_detected_ = false;
 
-    state_ptr_ = std::make_shared<AgentState>(AgentState());
-    state_ptr_->init(nh, nh_private);
+    state_ptr_ = std::make_shared<AgentState>(AgentState(nh, nh_private));
 
     // initialize behaviours
     initializeBehaviours(nh, nh_private);
@@ -24,34 +23,34 @@ void StateMachineBase::initializeBehaviours(ros::NodeHandle& nh, ros::NodeHandle
     land_behaviour_.init(nh, nh_private, state_ptr_);
 }
 
-void StateMachineBase::initialize(const Initialization::Event cmd) {
+void StateMachineBase::initialize(const Initialization::Event& cmd) {
     FSM_INFO("Taking off!");
     init_behaviour_.execute(cmd);
 }
 
-void StateMachineBase::findMast(const MastSearch::Event cmd) {
+void StateMachineBase::findMast(const MastSearch::Event& cmd) {
     FSM_INFO("Searching for Mast...");
     search_behaviour_.execute(cmd);
-    mast_detected = true;  // temporary shortcircuit
+    mast_detected_ = true;  // temporary shortcircuit
 }
 
-void StateMachineBase::detachBlock(const DetachBlock::Event cmd) {
+void StateMachineBase::detachBlock(const DetachBlock::Event& cmd) {
     FSM_INFO("Removing block on mast...");
     detach_behaviour_.execute(cmd);
 }
 
-void StateMachineBase::attachBlock(const AttachBlock::Event cmd) {
+void StateMachineBase::attachBlock(const AttachBlock::Event& cmd) {
     FSM_INFO("Placing block on mast...");
     attach_behaviour_.execute(cmd);
-    has_payload = false;  // temporary shortcircuit
+    has_payload_ = false;  // temporary shortcircuit
 }
 
-void StateMachineBase::hover(const Hovering::Event cmd) {
+void StateMachineBase::hover(const Hovering::Event& cmd) {
     FSM_INFO("In Position Hold");
     hover_behaviour_.execute(cmd);
 }
 
-void StateMachineBase::land(const Termination::Event cmd) {
+void StateMachineBase::land(const Termination::Event& cmd) {
     FSM_INFO("Landing!");
     land_behaviour_.execute(cmd);
 }

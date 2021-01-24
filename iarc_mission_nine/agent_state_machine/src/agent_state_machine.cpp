@@ -19,19 +19,18 @@ AgentStateMachine::AgentStateMachine(ros::NodeHandle& nh, ros::NodeHandle& nh_pr
 void AgentStateMachine::run() {
     executeBehaviour<Initialization>();
     // First, look for the mast
-    performTask<MastSearch>();  // exits when mast is found
+    // performTask<MastSearch>();  // exits when mast is found
     // Second, remove the existing block
-    performTask<DetachBlock>();  // exits once block is removed
+    // performTask<DetachBlock>();  // exits once block is removed
     // Now, attach payload in place of the block
-    performTask<AttachBlock>();  // exits once block is in place
+    // performTask<AttachBlock>();  // exits once block is in place
     // Die!
-    executeBehaviour<Termination>();
+    // executeBehaviour<Termination>();
 
     machine_.stop();
 }
 
-template<class Event>
-void AgentStateMachine::performTask() {
+template<class Event> void AgentStateMachine::performTask() {
     // since every task must come back to hover, these two calls are always together
     executeBehaviour<Event>();
     executeBehaviour<Hovering>();  // hover at the current height by default
@@ -39,7 +38,7 @@ void AgentStateMachine::performTask() {
 
 void AgentStateMachine::publishCurrState(const ros::TimerEvent&) {
     std_msgs::String state_msg;
-    state_msg.data = state_names[machine_.current_state()[0]];
+    state_msg.data = state_names_[machine_.current_state()[0]];
     state_pub_.publish(state_msg);
 }
 

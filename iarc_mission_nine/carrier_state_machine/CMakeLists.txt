@@ -13,7 +13,8 @@ cs_add_library(carrier_state
 target_link_libraries(carrier_state ${catkin_LIBRARIES})
 
 cs_add_library(carrier_behaviours
-    src/behaviours/hovering.cpp
+    src/behaviours/hovering_after_detach.cpp
+    src/behaviours/hovering_before_detach.cpp
     src/behaviours/termination.cpp
     src/behaviours/deploy_agent.cpp
     src/behaviours/reach_ship.cpp

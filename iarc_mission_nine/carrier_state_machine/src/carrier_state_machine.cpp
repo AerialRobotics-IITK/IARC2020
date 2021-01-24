@@ -19,24 +19,23 @@ CarrierStateMachine::CarrierStateMachine(ros::NodeHandle& nh, ros::NodeHandle& n
 void CarrierStateMachine::run() {
     // First, get to the ship
     performTask<ReachShip>();  // exits when planned trajectory is complete
-    performTask<HoveringBeforeDetach>();
+    // performTask<HoveringBeforeDetach>();
     // Second, deploy the agent to do its work
-    performTask<DeployAgent>();  // exits once agent has detached
-    performTask<HoveringAfterDetach>();
+    // performTask<DeployAgent>();  // exits once agent has detached
+    // performTask<HoveringAfterDetach>();
     // Now, return to takeoff zone
-    performTask<ReturnHome>();  // exits once carrier is in takeoff zone
-    performTask<HoveringBeforeDetach>();
+    // performTask<ReturnHome>();  // exits once carrier is in takeoff zone
+    // performTask<HoveringBeforeDetach>();
     // Die!
-    executeBehaviour<Termination>();
+    // executeBehaviour<Termination>();
 
     machine_.stop();
 }
 
-template<class Event>
-void CarrierStateMachine::performTask() {
+template<class Event> void CarrierStateMachine::performTask() {
     // since every task must come back to hover, these two calls are always together
     executeBehaviour<Event>();
-    //executeBehaviour<Hovering>();  // hover at the current height by default
+    // executeBehaviour<Hovering>();  // hover at the current height by default
 }
 
 void CarrierStateMachine::publishCurrState(const ros::TimerEvent&) {

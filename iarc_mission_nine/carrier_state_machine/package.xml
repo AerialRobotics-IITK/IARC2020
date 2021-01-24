@@ -17,6 +17,7 @@
     <depend>mavros_msgs</depend>
     <depend>std_msgs</depend>
     <depend>std_srvs</depend>
+    <depend>rosplane</depend>
 
     <depend>state_machine_definition</depend>
 

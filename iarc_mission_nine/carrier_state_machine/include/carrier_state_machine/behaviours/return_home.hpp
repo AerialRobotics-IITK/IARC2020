@@ -1,7 +1,8 @@
 #pragma once
 
 #include <carrier_state_machine/carrier_state/carrier_state.hpp>
-#include <path_manager_base.h>  //for rosplane
+#include <path_manager_base.h>     //for rosplane
+#include <path_manager_example.h>  //for rosplane
 
 namespace ariitk::carrier_state_machine {
 

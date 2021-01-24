@@ -10,7 +10,7 @@ void Initialization::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private, cons
     mav_state_ = state_ptr;
 }
 
-void Initialization::execute(const Event& evt) {
+void Initialization::execute(const Event evt) {
     BHV_INFO("Initializing...");
     // waitForDeploy();
     // detach();

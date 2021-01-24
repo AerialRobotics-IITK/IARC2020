@@ -27,7 +27,7 @@ cs_add_library(carrier_state_machine_lib
     src/carrier_state_machine_base.cpp
     src/carrier_state_machine.cpp
 )
-target_link_libraries(carrier_state_machine_lib carrier_behaviours)
+target_link_libraries(carrier_state_machine_lib carrier_behaviours ${catkin_LIBRARIES})
 
 cs_add_executable(carrier_state_machine_node src/carrier_state_machine_node.cpp)
 target_link_libraries(carrier_state_machine_node carrier_state_machine_lib)

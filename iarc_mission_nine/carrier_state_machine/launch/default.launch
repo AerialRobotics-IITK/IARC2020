@@ -10,4 +10,6 @@
             <remap from="command/pose" to="mavros/setpoint_position/local"/>
         </node>
     </group>
+    <include file="$(find rosplane_sim)/launch/fixedwing.launch">
+    </include>
 </launch>

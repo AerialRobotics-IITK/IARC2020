@@ -13,11 +13,11 @@ void CarrierState::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private) {
     pose_.position.z = DBL_MIN;
     ros::Rate loop_rate(2);
 
-    // wait for first message
-    while (pose_.position.z == DBL_MIN) {
-        ros::spinOnce();
-        loop_rate.sleep();
-    }
+    // // wait for first message
+    // while (pose_.position.z == DBL_MIN) {
+    //     ros::spinOnce();
+    //     loop_rate.sleep();
+    // }
 }
 
 void CarrierState::odometryCallback(const nav_msgs::Odometry& odom) {

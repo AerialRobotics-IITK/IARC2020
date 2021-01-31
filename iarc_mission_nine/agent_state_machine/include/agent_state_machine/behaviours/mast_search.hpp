@@ -18,7 +18,7 @@ class MastSearch {
 
   private:
     std::shared_ptr<AgentState> mav_state_;  // TODO: Create Destructors
-    ariitk::mast_locator::MastLocatorNode mast_finder_;
+    iarc2020::mast_locator::MastLocatorNode mast_finder_;
 };
 
 }  // namespace ariitk::agent_state_machine

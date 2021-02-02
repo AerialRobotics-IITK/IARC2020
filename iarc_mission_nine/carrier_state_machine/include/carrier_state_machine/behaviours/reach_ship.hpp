@@ -15,7 +15,6 @@ class ReachShip {
 
   private:
     std::shared_ptr<CarrierState> mav_state_;
-    rosplane::path_manager_base* est = new rosplane::path_manager_example();
 };
 
 }  // namespace ariitk::carrier_state_machine

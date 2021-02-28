@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>agent_state_machine</name>
+    <name>carrier_state_machine</name>
     <version>0.0.0</version>
-    <description>The agent_state_machine package</description>
+    <description>The carrier_state_machine package</description>
 
     <maintainer email="ashwins@iitk.ac.in">Ashwin Shenai</maintainer>
 
@@ -15,14 +15,12 @@
     <depend>nav_msgs</depend>
     <depend>geometry_msgs</depend>
     <depend>mavros_msgs</depend>
+    <depend>std_msgs</depend>
+    <depend>std_srvs</depend>
+    <depend>rosplane</depend>
 
     <depend>state_machine_definition</depend>
 
-    <depend>mast_finder</depend>
-    <depend>plate_detector</depend>
-    <depend>led_detector</depend>
-    <depend>feature_detection</depend>
-    <depend>pose_estimator</depend>
-    <depend>detector_msgs</depend>
+    <depend>dubins_trajectory_generator</depend>
 
 </package>

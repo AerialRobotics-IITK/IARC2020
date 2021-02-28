@@ -11,6 +11,10 @@
 
     <!-- Add packages as run dependencies below -->
     <depend>agent_state_machine</depend>
+    <depend>carrier_state_machine</depend>
+
+    <!-- Add packages as run dependencies below -->
+
     <depend>iarc_simulation_tools</depend>
 
 </package>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="carrier_name" default="quadplane"/>
+    <arg name="carrier_type" default="generic_quadplane"/>
+
+    <group ns="$(arg carrier_name)">
+        <node pkg="carrier_state_machine" type="carrier_state_machine_node" name="carrier_state_machine" output="screen">
+            <rosparam file="$(find carrier_state_machine)/cfg/params.yaml" command="load"/>
+            <remap from="odometry" to="mavros/local_position/odom"/>
+            <remap from="command/pose" to="mavros/setpoint_position/local"/>
+            <remap from="state" to="truth"/>
+        </node>
+    </group>
+    <include file="$(find rosplane_sim)/launch/fixedwing.launch">
+    </include>
+</launch>

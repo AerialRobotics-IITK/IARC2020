@@ -8,17 +8,26 @@
 
     <arg name="world_name" default="integrated"/>
 
-    <include file="$(find iarc_mission_nine)/launch/env.launch">
+    <!-- <include file="$(find iarc_mission_nine)/launch/env.launch">
         <arg name="agent_name" value="$(arg agent_name)"/>
         <arg name="agent_type" value="$(arg agent_type)"/>
         <arg name="carrier_name" value="$(arg carrier_name)"/>
         <arg name="carrier_type" value="$(arg carrier_type)"/>
         <arg name="world_name" value="$(arg world_name)"/>
+    </include> -->
+
+    <include file="$(find iarc_simulation_tools)/launch/default.launch">
+        <arg name="mav_name" value="$(arg agent_name)" />
     </include>
 
-    <include file="$(find agent_state_machine)/launch/default.launch">
+    <!-- <include file="$(find agent_state_machine)/launch/default.launch">
         <arg name="agent_name" value="$(arg agent_name)"/>
         <arg name="agent_type" value="$(arg agent_type)"/>
     </include>
-    
+
+    <include file="$(find carrier_state_machine)/launch/default.launch">
+        <arg name="carrier_name" value="$(arg carrier_name)"/>
+        <arg name="carrier_type" value="$(arg carrier_type)"/>
+    </include>
+
 </launch>

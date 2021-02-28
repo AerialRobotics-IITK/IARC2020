@@ -3,15 +3,20 @@
 namespace ariitk::agent_state_machine {
 
 void MastSearch::init(ros::NodeHandle& nh, ros::NodeHandle& nh_private, const std::shared_ptr<AgentState> state_ptr) {
-    // mast_finder_.init(ros::NodeHandle("mast_detector_node"));
+    MastSearch::mast_finder_.init(nh);
+    ros::Rate loop_rate(30.0);
+    for (int i = 0; i < 45; i++) {
+        ros::spinOnce();
+        loop_rate.sleep();
+    }
 }
 
 void MastSearch::execute(const Event evt) {
     BHV_INFO("Searching for Mast...");
-    ros::Rate loop_rate(30.0);
+    ros::Rate loop_rate(30);
     while (ros::ok()) {
         ros::spinOnce();
-        // mast_finder_.run();
+        MastSearch::mast_finder_.run();
         loop_rate.sleep();
     }
 }
